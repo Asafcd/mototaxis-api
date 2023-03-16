@@ -1,4 +1,7 @@
 @baseUrl = http://localhost/api/v1
-### GET drivers
 
+### GET drivers
 GET {{baseUrl}}/driver
+
+### GET trips
+GET {{baseUrl}}/trip

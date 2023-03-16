@@ -29,7 +29,8 @@ app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-app.use('/api/v1/driver', require("./Routes/index"))
+app.use('/api/v1/driver', require("./src/Routes/index"))
+app.use('/api/v1/trip', require("./src/Routes/tripRoute"))
 
 app.listen(app.get("port"), () => {
   console.log(`Server on port ${app.get("port")} - Bienvenidos Mototaxis `);
