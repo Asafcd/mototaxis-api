@@ -1,7 +1,7 @@
-import { firebaseApp } from "../Configs/firebaseConfig"
+import firebase from '../firebase'
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
-const db = getFirestore(firebaseApp)
+const db = getFirestore(firebase)
 
 const createTrip = (body) =>{
     try{
