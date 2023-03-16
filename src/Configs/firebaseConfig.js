@@ -1,16 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { firebaseKeys } from "../Keys/firebaseKeys";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-require('dotenv').config();
-const {API_KEY} = process.env
-const {AUTH_DOMAIN} = process.env
-const {PROJECT_ID} = process.env
-const {STORAGE_BUCKET} = process.env
-const {MESSAGING_SENDER_ID} = process.env
-const {APP_ID} = process.env
-const {MEASUREMENT_ID} = process.env
+const {API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID, MEASUREMENT_ID} = firebaseKeys
 
 const firebaseConfig = {
   apiKey: API_KEY,
