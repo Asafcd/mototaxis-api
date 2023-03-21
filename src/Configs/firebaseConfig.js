@@ -1,8 +1,7 @@
-import { firebaseKeys } from "../Keys/firebaseKeys";
-
+const  firebaseKeys  = require("../Keys/firebaseKeys")
 const {API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID, MEASUREMENT_ID} = firebaseKeys
 
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
   projectId: PROJECT_ID,
@@ -10,4 +9,6 @@ export const firebaseConfig = {
   messagingSenderId: MESSAGING_SENDER_ID,
   appId: APP_ID,
   measurementId: MEASUREMENT_ID //Optional For Firebase JS SDK v7.20.0 and later
-};
+}
+
+module.exports = firebaseConfig

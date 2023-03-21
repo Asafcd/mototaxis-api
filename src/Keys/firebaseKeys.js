@@ -7,7 +7,7 @@ const {MESSAGING_SENDER_ID} = process.env
 const {APP_ID} = process.env
 const {MEASUREMENT_ID} = process.env
 
-export const firebaseKeys = {
+const firebaseKeys = {
     API_KEY,
     AUTH_DOMAIN,
     PROJECT_ID,
@@ -16,3 +16,5 @@ export const firebaseKeys = {
     APP_ID,
     MEASUREMENT_ID
 }
+
+module.exports = firebaseKeys
