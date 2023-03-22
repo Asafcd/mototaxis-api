@@ -4,34 +4,33 @@
 GET {{baseUrl}}/driver
 
 ### CREATE location
-POST {{baseUrl}}/location/pla HTTP/1.1
+POST {{baseUrl}}/location HTTP/1.1
 Content-Type: application/json
 
 {
-    "ID": "pla",
-    "address": "calle 9 #331 arcos",
+    "name": "Lavanderia multiversos",
+    "address": "calle 888 #222 Piedra de agua",
     "coordinates": {
         "latitud": 20.920236508496956,
-        "longitud": 89.66749090568848
+        "longitud": -89.66749090568848
     },
     "coordinates_delta": {
         "latitud": 20.921236508496956,
-        "longitud": 89.66849090568848
-    },
-    "name": "papeleria los angelitos"
+        "longitud": -89.66849090568848
+    }    
 }
 
 ### GET locations
 GET {{baseUrl}}/location
 
 ### GET a location
-GET {{baseUrl}}/location/pla
+GET {{baseUrl}}/location/nXbymiwVgpW4TMrm1TO9
 
 ### DELETE a location
-DELETE  {{baseUrl}}/location/plas
+DELETE  {{baseUrl}}/location/id
 
 ### UPDATE trip
-PUT {{baseUrl}}/location/pla HTTP/1.1
+PUT {{baseUrl}}/location/kdaadsa HTTP/1.1
 Content-Type: application/json
 
 {

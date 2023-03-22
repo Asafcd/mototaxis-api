@@ -1,8 +1,8 @@
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { getFirestore, Timestamp, FieldValue, GeoPoint } = require('firebase-admin/firestore');
 const firebase = require('../../firebase')
 const db = getFirestore(firebase)
 
-const createLocation = async (ID, body) => {
+const createLocation = async (body) => {
   try {
     const res = await db.collection('Location').add(body)
     return res;
@@ -26,7 +26,7 @@ const getLocation = async (id) => {
     const location = await locationRef.get()
 
     if(location.exists){ return location.data()}
-    else{return "No such document"}
+    else{return {exists: false, data:"No such document"}}
     
   } catch (error) {
     throw { status: 500, error: error };
@@ -56,7 +56,13 @@ const deleteLocation = async(id) => {
   }
 };
 
+const toGeoPoint = (coordinates) => {
+  const {latitud, longitud} = coordinates
+  return new GeoPoint(latitud, longitud)
+}
+
 module.exports = {
+  toGeoPoint,
   createLocation,
   getLocation,
   getLocations,
