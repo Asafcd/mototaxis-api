@@ -1,19 +1,5 @@
 const locationService = require('../Services/locationService')
 
-const location = {
-    ID: "pla",
-    address: "calle 9 #331 arcos",
-    coordinates: {
-        latitud: "20.920236508496956",
-        longitud: "89.66749090568848",
-    },
-    coordinates_delta: {
-        latitud: "20.920236508496956",
-        longitud: "89.66749090568848",
-    },
-    name: "papeleria los angelitos",
-};
-
 const createLocation = async (req, res) => {
     const ID = req.params.id
     const body = req.body
@@ -42,7 +28,7 @@ const getLocations = async(req,res) => {
 const getLocation = async (req,res) => {
     const id = req.params.id
     try {
-       const location = locationService.getlocation(id)
+       const location = await locationService.getLocation(id)
         res.status(200).send({data: location})
     } catch (err) {
         res
@@ -55,7 +41,7 @@ const updateLocation = async(req,res) => {
     const id = req.params.id
     const body = req.body
     try {
-       const updatedlocation = locationService.updatelocation(id, body)
+       const updatedlocation = locationService.updateLocation(id, body)
         res.status(200).send({data: updatedlocation})
     } catch (err) {
         res
@@ -64,10 +50,10 @@ const updateLocation = async(req,res) => {
     }
 };
 
-const deleteLocation = (req,res) => {
+const deleteLocation = async (req,res) => {
     const id = req.params.id
     try {
-       const deletedlocation = locationService.deleteLocation()
+       const deletedlocation = await locationService.deleteLocation(id)
         res.status(200).send({data: deletedlocation})
     } catch (err) {
         res

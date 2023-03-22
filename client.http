@@ -3,5 +3,26 @@
 ### GET drivers
 GET {{baseUrl}}/driver
 
+### CREATE trip
+POST {{baseUrl}}/location/pla HTTP/1.1
+Content-Type: application/json
+
+{
+    "ID": "pla",
+    "address": "calle 9 #331 arcos",
+    "coordinates": {
+        "latitud": "20.920236508496956",
+        "longitud": "89.66749090568848"
+    },
+    "coordinates_delta": {
+        "latitud": "20.921236508496956",
+        "longitud": "89.66849090568848"
+    },
+    "name": "papeleria los angelitos"
+}
+
 ### GET trips
-GET {{baseUrl}}/trip
+GET {{baseUrl}}/location
+
+### GET a trip
+GET {{baseUrl}}/location/pla

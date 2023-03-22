@@ -1,14 +1,2 @@
-const  firebaseKeys  = require("../Keys/firebaseKeys")
-const {API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID, MEASUREMENT_ID} = firebaseKeys
-
-const firebaseConfig = {
-  apiKey: API_KEY,
-  authDomain: AUTH_DOMAIN,
-  projectId: PROJECT_ID,
-  storageBucket: STORAGE_BUCKET,
-  messagingSenderId: MESSAGING_SENDER_ID,
-  appId: APP_ID,
-  measurementId: MEASUREMENT_ID //Optional For Firebase JS SDK v7.20.0 and later
-}
-
-module.exports = firebaseConfig
+const serviceAccount = require('../../project-fenix-7af65-firebase-adminsdk-uh3gi-d1facb18a9.json')
+module.exports = serviceAccount

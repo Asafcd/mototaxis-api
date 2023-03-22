@@ -1,11 +1,16 @@
-const db = require('../../firebase')
-
-//const db = getFirestore(firebase)
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const firebase = require('../../firebase')
+const db = getFirestore(firebase)
 
 const createLocation = async (ID, body) => {
   try {
-    //console.log(firebaseApp)
     const res = await db.collection('Location').doc(ID).set(body);
+    /*  Add a new document with a generated id.
+    const res = await db.collection('cities').add({
+      name: 'Tokyo',
+      country: 'Japan'
+    }); */
+
     return res;
   } catch (error) {
     throw { status: 500, error};
@@ -15,19 +20,22 @@ const createLocation = async (ID, body) => {
 const getLocations = async() => {
   try {
     const locations = await db.collection('Location').get();
-    console.log(locations.docs)
     let locationsData = []
-    /* snapshot.forEach((doc) => {
-        console.log(doc.id, '=>', doc.data());
-    }); */
-    return locations;
+    locations.forEach((doc) => {
+      let tempLocation = { ID: doc.id, ...doc.data(),  }
+      locationsData.push(tempLocation)
+    })
+    console.log(locationsData)
+    return locationsData;
   } catch (error) {
     throw { status: 500, error: error };
   }
 };
 
-const getLocation = (id) => {
+const getLocation = async (id) => {
   try {
+    const location = await db.collection('Location').doc(id)
+    console.log(location)
     return location;
   } catch (error) {
     throw { status: 500, error: error };
