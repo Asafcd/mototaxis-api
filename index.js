@@ -14,15 +14,14 @@ app.use( (req,res,next) =>{
     // Pass to next layer of middleware
     next();
 } )
-app.set("port", process.env.PORT || 80);
+app.set("port", process.env.PORT || 100);
 app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-app.use('/api/v1/driver', require("./src/Routes/index"))
+app.use('/api/v1/driver', require("./src/Routes/driverRoute"))
 app.use('/api/v1/location', require("./src/Routes/locationRoute"))
 
 app.listen(app.get("port"), () => {
   console.log(`Server on port ${app.get("port")} - Bienvenidos Mototaxis `);
-  //console.log(path.join(__dirname, 'views/index.html'));
 });
