@@ -24,7 +24,7 @@ Content-Type: application/json
 GET {{baseUrl}}/location
 
 ### GET a location
-GET {{baseUrl}}/location/nXbymiwVgpW4TMrm1TO9
+GET {{baseUrl}}/location/qUPqUoqgTGXEZEndx623
 
 ### DELETE a location
 DELETE  {{baseUrl}}/location/nXbymiwVgpW4TMrm1TO9

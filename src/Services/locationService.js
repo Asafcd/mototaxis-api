@@ -5,7 +5,7 @@ const db = getFirestore(firebase)
 const createLocation = async (body) => {
   try {
     const res = await db.collection('Location').add(body)
-    return res;
+    return {status: true, data: res};
   } catch (error) {
     throw { status: 500, error};
   }
@@ -14,7 +14,7 @@ const createLocation = async (body) => {
 const getLocations = async() => {
   try {
     const locations = await db.collection('Location').get();
-    return locations;
+    return {status: true, data: locations}
   } catch (error) {
     throw { status: 500, error: error };
   }
@@ -25,8 +25,8 @@ const getLocation = async (id) => {
     const locationRef = db.collection('Location').doc(id)
     const location = await locationRef.get()
 
-    if(location.exists){ return location.data()}
-    else{return {exists: false, data:"No such document"}}
+    if(location.exists){ return {status:true, data: location.data()}}
+    else{return {status: false, data:"No such document"}}
     
   } catch (error) {
     throw { status: 500, error: error };
@@ -38,9 +38,9 @@ const updateLocation = async(id, body) => {
     const locationRef = db.collection('Location').doc(id)
     await locationRef.update(body)
     const updatedLocation = await locationRef.get()
-    return updatedLocation.data()
+    return {status: true, data: updatedLocation.data()}
   } catch (error) {
-    throw { status: 500, error: error };
+    throw { status: error.status||500, error: error };
   }
 };
 
@@ -49,7 +49,7 @@ const deleteLocation = async(id) => {
     const locationRef = db.collection('Location').doc(id)
     await locationRef.delete()
 
-    return `${id} deleted succesfully`
+    return {status: true, data: `${id} deleted succesfully` }
     
   } catch (error) {
     throw { status: 500, error: error || 'Service method error' };

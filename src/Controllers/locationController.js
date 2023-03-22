@@ -10,11 +10,11 @@ const createLocation = async (req, res) => {
             const geoP = locationService.toGeoPoint(coordinates)
             const geoP_delta = locationService.toGeoPoint(coordinates_delta)
             const location = { ...body, coordinates: geoP, coordinates_delta: geoP_delta}
-            const resCreated = await locationService.createLocation(location)
-            res.status(200).send({message: 'Location succesfully created', data: resCreated})
+            const {data} = await locationService.createLocation(location)
+            res.status(200).send({message: 'Location succesfully created', data})
         } catch (err) {
             res
-            .status(err?.status || 500)
+            .status(err?.status || 400)
             .send({ status: "FAILED", data: { error: err?.message || err } });
         }
     }else{
@@ -26,8 +26,8 @@ const createLocation = async (req, res) => {
 const getLocations = async(req,res) => {
     try {
         let locationsData = []
-       const locations = await locationService.getLocations()
-       locations.forEach((doc) => {
+       const {data} = await locationService.getLocations()
+       data.forEach((doc) => {
             let tempLocation = { ID: doc.id, ...doc.data(),  }
             locationsData.push(tempLocation)
         })
@@ -35,7 +35,7 @@ const getLocations = async(req,res) => {
         res.status(200).send({data: locationsData})
     } catch (err) {
         res
-        .status(err?.status || 500)
+        .status(err?.status || 400)
         .send({ status: "FAILED", data: { error: err?.message || err } });
     }
 };
@@ -45,11 +45,13 @@ const getLocation = async (req,res) => {
     const {status, error} = validateId(id)
     if(status){
         try {
-            const location = await locationService.getLocation(id)
-            res.status(200).send({data: location})
+            const {status, data} = await locationService.getLocation(id)
+            if(status){ res.status(200).send({data}) }
+            else{ res.status(400).send({data: `location with id ${id} not found`})}
+            
         } catch (err) {
             res
-            .status(err?.status || 500)
+            .status(err?.status || 400)
             .send({ status: "FAILED", data: { error: err?.message || err } });
         }
     }else{
@@ -62,11 +64,11 @@ const updateLocation = async(req,res) => {
     const {id} = req.params
     const body = req.body
     try {
-       const updatedlocation = await locationService.updateLocation(id, body)
-        res.status(200).send({data: updatedlocation})
+       const {data} = await locationService.updateLocation(id, body)
+        res.status(200).send({data})
     } catch (err) {
         res
-        .status(err?.status || 500)
+        .status(err?.status || 400)
         .send({ status: "FAILED", data: { error: err?.message || err.error.details } });
     }
 };
@@ -74,12 +76,13 @@ const updateLocation = async(req,res) => {
 const deleteLocation = async (req,res) => {
     const {id} = req.params
     try {
-        /* const {data:{exists}} = await getLocation(id)
-        if(!exists){ return 'no existe el doc a eliminar' } */
-        //Revisar con el service si existe y si es asi, eliminarlo
-        //Si no existe, mandar msj que el ide buscado no existe
-        const deletedlocation = await locationService.deleteLocation(id)
-        res.status(200).send({data: deletedlocation})
+        const {status} = await locationService.getLocation(id)
+        if(status){ 
+            const {data} = await locationService.deleteLocation(id)
+            res.status(200).send({data})
+        }
+        else{ res.status(400).send({data: 'location to delete not found'})}
+        
     } catch (err) {
         res
         .status(err?.status || 500)
