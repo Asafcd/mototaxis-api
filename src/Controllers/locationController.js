@@ -16,8 +16,14 @@ const createLocation = async (req, res) => {
 
 const getLocations = async(req,res) => {
     try {
+        let locationsData = []
        const locations = await locationService.getLocations()
-        res.status(200).send({data: locations})
+       locations.forEach((doc) => {
+            let tempLocation = { ID: doc.id, ...doc.data(),  }
+            locationsData.push(tempLocation)
+        })
+    
+        res.status(200).send({data: locationsData})
     } catch (err) {
         res
         .status(err?.status || 500)
@@ -41,7 +47,7 @@ const updateLocation = async(req,res) => {
     const id = req.params.id
     const body = req.body
     try {
-       const updatedlocation = locationService.updateLocation(id, body)
+       const updatedlocation = await locationService.updateLocation(id, body)
         res.status(200).send({data: updatedlocation})
     } catch (err) {
         res
