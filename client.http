@@ -27,7 +27,7 @@ GET {{baseUrl}}/location
 GET {{baseUrl}}/location/nXbymiwVgpW4TMrm1TO9
 
 ### DELETE a location
-DELETE  {{baseUrl}}/location/id
+DELETE  {{baseUrl}}/location/nXbymiwVgpW4TMrm1TO9
 
 ### UPDATE trip
 PUT {{baseUrl}}/location/kdaadsa HTTP/1.1
