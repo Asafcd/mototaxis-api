@@ -1,42 +1,64 @@
 const driverService = require('../Services/driverService')
+const {validateBody, validateId} = require('../Validators/driverValidator')
 
-const createDriver = (req,res) => {
+const createDriver = async (req,res) => {
+    const body = req.body
+    const {status, error} = validateBody(body)
+    if(status){
+        try {
+           const {data} = await driverService.createDriver(body)
+            res.status(200).send({message: 'Driver successfully created', data})
+        } catch (err) {
+            res
+            .status(err?.status || 500)
+            .send({ status: "FAILED", data: { error: err?.message || err } });
+        }
+    } else{
+        res.status(400).send({status: "Failed type validation", data: error})
+    }
+};
+const getDrivers = async (req,res) => {
     try {
-       const createdDriver = driverService.createDriver()
-        res.status(200).send({data: createdDriver})
+        const driversData = []
+        const {data} = await driverService.getDrivers()
+        data.forEach((driver) => {
+            const tempDriver = {ID: driver.id, ...driver.data()}
+            driversData.push(tempDriver);
+        });
+        res.status(200).send({data: driversData})
     } catch (err) {
         res
         .status(err?.status || 500)
         .send({ status: "FAILED", data: { error: err?.message || err } });
     }
 };
-const getDrivers = (req,res) => {
-    try {
-       const drivers = driverService.getDrivers()
-        res.status(200).send({data: drivers})
-    } catch (err) {
-        res
-        .status(err?.status || 500)
-        .send({ status: "FAILED", data: { error: err?.message || err } });
+
+const getDriver = async (req,res) => {
+    const {id} = req.params
+    const {status, error} = validateId(id)
+    if (status){
+        try {
+            const { status, data } = await driverService.getDriver()
+            if(status) { res.status(200).send({data}) }
+            else{
+                res.status(400).send({data: `Driver with id ${id} not found`})
+            }
+        } catch (err) {
+            res
+            .status(err?.status || 500)
+            .send({ status: "FAILED", data: { error: err?.message || err } });
+        }
+    } else {
+        res.status(400).send({status: "Failed type validation", data: error })
     }
 };
 
-const getDriver = (req,res) => {
-    try {
-       const drivers = driverService.getDriver(req.params.id)
-        res.status(200).send({data: drivers})
-    } catch (err) {
-        res
-        .status(err?.status || 500)
-        .send({ status: "FAILED", data: { error: err?.message || err } });
-    }
-};
-
-const updateDriver = (req,res) => {
+const updateDriver = async (req,res) => {
+    const {id} = req.params
     const body = req.body
     try {
-       const updateDriver = driverService.updateDriver(body)
-        res.status(200).send({data: updateDriver})
+        const {data} = await driverService.updateDriver(id, body)
+        res.status(200).send({data})
     } catch (err) {
         res
         .status(err?.status || 500)
@@ -44,10 +66,16 @@ const updateDriver = (req,res) => {
     }
 };
 
-const deleteDriver = (req,res) => {
+const deleteDriver = async (req,res) => {
+    const {id} = req.params
     try {
-       const deleteDriver = driverService.deleteDriver(req.params.id)
+       const {status} = await driverService.getDriver(id)
+       if(status){
+        const {data} = await driverService.deleteDriver(id)
         res.status(200).send({data: deleteDriver})
+        } else{
+            res.status(400).send({data: 'Driver to delete not found'})
+       }
     } catch (err) {
         res
         .status(err?.status || 500)
