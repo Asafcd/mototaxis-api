@@ -31,7 +31,7 @@ const getDriver = async (id) => {
   } catch (error) {
     throw { status: 500, error: error };
   }
-};s
+};
 
 const updateDriver = async(id, body) => {
   try {

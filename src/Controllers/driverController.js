@@ -38,7 +38,7 @@ const getDriver = async (req,res) => {
     const {status, error} = validateId(id)
     if (status){
         try {
-            const { status, data } = await driverService.getDriver()
+            const { status, data } = await driverService.getDriver(id)
             if(status) { res.status(200).send({data}) }
             else{
                 res.status(400).send({data: `Driver with id ${id} not found`})

@@ -31,7 +31,7 @@ const getReport = async (id) => {
   } catch (error) {
     throw { status: 500, error: error };
   }
-};s
+};
 
 const updateReport = async(id, body) => {
   try {
