@@ -1,17 +1,11 @@
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { getFirestore, Timestamp, FieldValue, GeoPoint } = require('firebase-admin/firestore');
 const firebase = require('../../firebase')
 const db = getFirestore(firebase)
 
-const createLocation = async (ID, body) => {
+const createLocation = async (body) => {
   try {
-    const res = await db.collection('Location').doc(ID).set(body);
-    /*  Add a new document with a generated id.
-    const res = await db.collection('cities').add({
-      name: 'Tokyo',
-      country: 'Japan'
-    }); */
-
-    return res;
+    const res = await db.collection('Location').add(body)
+    return {status: true, data: res};
   } catch (error) {
     throw { status: 500, error};
   }
@@ -20,13 +14,7 @@ const createLocation = async (ID, body) => {
 const getLocations = async() => {
   try {
     const locations = await db.collection('Location').get();
-    let locationsData = []
-    locations.forEach((doc) => {
-      let tempLocation = { ID: doc.id, ...doc.data(),  }
-      locationsData.push(tempLocation)
-    })
-    console.log(locationsData)
-    return locationsData;
+    return {status: true, data: locations}
   } catch (error) {
     throw { status: 500, error: error };
   }
@@ -34,31 +22,47 @@ const getLocations = async() => {
 
 const getLocation = async (id) => {
   try {
-    const location = await db.collection('Location').doc(id)
-    console.log(location)
-    return location;
+    const locationRef = db.collection('Location').doc(id)
+    const location = await locationRef.get()
+
+    if(location.exists){ return {status:true, data: location.data()}}
+    else{return {status: false, data:"No such document"}}
+    
   } catch (error) {
     throw { status: 500, error: error };
   }
 };
 
-const updateLocation = (id, body) => {
+const updateLocation = async(id, body) => {
   try {
-    return location;
+    const locationRef = db.collection('Location').doc(id)
+    await locationRef.update(body)
+    const updatedLocation = await locationRef.get()
+    return {status: true, data: updatedLocation.data()}
   } catch (error) {
-    throw { status: 500, error: error };
+    throw { status: error.status||500, error: error };
   }
 };
 
-const deleteLocation = (id) => {
+const deleteLocation = async(id) => {
   try {
-    return location;
+    const locationRef = db.collection('Location').doc(id)
+    await locationRef.delete()
+
+    return {status: true, data: `${id} deleted succesfully` }
+    
   } catch (error) {
-    throw { status: 500, error: error };
+    throw { status: 500, error: error || 'Service method error' };
   }
 };
+
+const toGeoPoint = (coordinates) => {
+  const {latitud, longitud} = coordinates
+  return new GeoPoint(latitud, longitud)
+}
 
 module.exports = {
+  toGeoPoint,
   createLocation,
   getLocation,
   getLocations,

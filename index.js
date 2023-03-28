@@ -24,5 +24,5 @@ app.use('/api/v1/location', require("./src/Routes/locationRoute"))
 app.use('/api/v1/button', require("./src/Routes/buttonRoute"))
 
 app.listen(app.get("port"), () => {
-  console.log(`Server on port ${app.get("port")} - Bienvenidos Mototaxis `);
+  console.log(`Server on port ${app.get("port")} - Bienvenidos Backeros `);
 });

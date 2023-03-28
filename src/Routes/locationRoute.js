@@ -4,7 +4,7 @@ const router = express.Router();
 const locationsController = require('../Controllers/locationController')
 
 router
-    .post('/:id', locationsController.createLocation )
+    .post('/', locationsController.createLocation )
     .get('/', locationsController.getLocations )
     .get('/:id', locationsController.getLocation )
     .put('/:id', locationsController.updateLocation )

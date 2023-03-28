@@ -1,75 +1,65 @@
-const drivers = [
-        {
-            id:"1",
-            name:"Manuel", 
-            lastname:"Perez",
-            plate:"45CSV9",
-            unitNo:"249",
-            phoneNo:"9999451635",
-            gender:"M",
-            memberSince:"", 
-        },
-        {
-            id:"2",
-            name:"Daniela", 
-            lastname:"Alvarado",
-            plate:"22ABC2",
-            unitNo:"250",
-            phoneNo:"9991356987",
-            gender:"F",
-            memberSince:"", 
-        },
-        {
-            id:"3",
-            name:"Mauricio", 
-            lastname:"Lopez",
-            plate:"85HYS4",
-            unitNo:"251",
-            phoneNo:"9995689632",
-            gender:"M",
-            memberSince:"", 
-        },
-    ]
+const { getFirestore, Timestamp, FieldValue, GeoPoint } = require('firebase-admin/firestore');
+const firebase = require('../../firebase')
+const db = getFirestore(firebase)
+
+const createDriver = async (body) => {
+  try {
+    const res = await db.collection('Drivers').add(body)
+    return {status: true, data: res};
+  } catch (error) {
+    throw { status: 500, error};
+  }
+};
+
+const getDrivers = async () => {
+  try {
+    const drivers = await db.collection('Drivers').get();
+    return {status: true, data: drivers}
+  } catch (error) {
+    throw { status: 500, error: error };
+  }
+};
+
+const getDriver = async (id) => {
+  try {
+    const driverRef = db.collection('Drivers').doc(id)
+    const driver = await driverRef.get()
+
+    if(driver.exists){ return {status:true, data: driver.data()}}
+    else{return {status: false, data:"No such document"}}
     
-const createDriver = (body) => {
-    try{
-        const index = (drivers.length + 1).toString()
-        drivers.push(body)
-        return body
-    }catch (error) { throw { status: 500, error: error } }
-}
+  } catch (error) {
+    throw { status: 500, error: error };
+  }
+};s
+
+const updateDriver = async(id, body) => {
+  try {
+    const driverRef = db.collection('Drivers').doc(id)
+    await driverRef.update(body)
+    const updatedDriver = await driverRef.get()
+    return {status: true, data: updatedDriver.data()}
+  } catch (error) {
+    throw { status: error.status||500, error: error };
+  }
+};
+
+const deleteDriver = async(id) => {
+  try {
+    const driverRef = db.collection('Drivers').doc(id)
+    await driverRef.delete()
+
+    return {status: true, data: `${id} deleted succesfully` }
     
-const getDrivers = () =>{
-    try{
-        return drivers
-    }catch (error) { throw { status: 500, error: error } }
-}
-
-const getDriver = (idFind) =>{
-    try{
-        return drivers.find(({id}) => id === idFind)
-    }catch (error) { throw { status: 500, error: error } }
-}
-
-const updateDriver = (idFind, body) =>{
-    try{
-        let driverIndex = drivers.findIndex(({id}) => id === idFind)
-        drivers[driverIndex] = body
-        return Driver
-    }catch (error) { throw { status: 500, error: error } }
-}
-
-const deleteDriver = (idFind) => {
-    try{
-        drivers = drivers.filter(({id}) => id !== idFind)
-        return drivers.find(({id}) => id === idFind)
-    }catch (error) { throw { status: 500, error: error } }
-}
+  } catch (error) {
+    throw { status: 500, error: error || 'Service method error' };
+  }
+};
 
 module.exports = {
-    createDriver,
-    getDrivers, 
-    getDriver,
-    updateDriver,
-    deleteDriver,
-}
+  createDriver,
+  getDriver,
+  getDrivers,
+  updateDriver,
+  deleteDriver,
+};

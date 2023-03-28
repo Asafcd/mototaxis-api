@@ -1,9 +1,8 @@
-const { initializeApp, cert } = require('firebase-admin/app');
+const { initializeApp } = require('firebase-admin/app');
+const firebaseConfig = require('./src/Configs/firebaseConfig')
 
-const serviceAccount = require('./project-fenix-7af65-firebase-adminsdk-uh3gi-d1facb18a9.json')
-const firebase = initializeApp({
-    credential: cert(serviceAccount)
-})
+const firebase = initializeApp(firebaseConfig)
+firebase? console.log('Connected to [project-fenix]') : console.error()
 /* const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 const firestore = getFirestore(firebase) */
 module.exports = firebase
