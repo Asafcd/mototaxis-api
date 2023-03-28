@@ -1,8 +1,8 @@
 const express = require("express");
-const exhbs = require('express-handlebars')
-const path = require("path");
+//const exhbs = require('express-handlebars')
+//const path = require("path");
 const morgan = require('morgan')
-const firebase = require('./firebase')
+
 
 const app = express();
 app.use( (req,res,next) =>{

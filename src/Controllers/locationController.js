@@ -54,10 +54,7 @@ const getLocation = async (req,res) => {
             .status(err?.status || 400)
             .send({ status: "FAILED", data: { error: err?.message || err } });
         }
-    }else{
-        res.status(400).send({status: "Failed type validation", data: error })
-    }
-    
+    }else{ res.status(400).send({status: "Failed type validation", data: error }) }  
 };
 
 const updateLocation = async(req,res) => {
