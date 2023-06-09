@@ -4,7 +4,7 @@ const db = getFirestore(firebase)
 
 const createDriver = async (body) => {
   try {
-    const res = await db.collection('Drivers').add(body)
+    const res = await db.collection('operadores').add(body)
     return {status: true, data: res};
   } catch (error) {
     throw { status: 500, error};
@@ -13,7 +13,7 @@ const createDriver = async (body) => {
 
 const getDrivers = async () => {
   try {
-    const drivers = await db.collection('Drivers').get();
+    const drivers = await db.collection('operadores').get();
     return {status: true, data: drivers}
   } catch (error) {
     throw { status: 500, error: error };
@@ -22,7 +22,7 @@ const getDrivers = async () => {
 
 const getDriver = async (id) => {
   try {
-    const driverRef = db.collection('Drivers').doc(id)
+    const driverRef = db.collection('operadores').doc(id)
     const driver = await driverRef.get()
 
     if(driver.exists){ return {status:true, data: driver.data()}}
@@ -35,7 +35,7 @@ const getDriver = async (id) => {
 
 const updateDriver = async(id, body) => {
   try {
-    const driverRef = db.collection('Drivers').doc(id)
+    const driverRef = db.collection('operadores').doc(id)
     await driverRef.update(body)
     const updatedDriver = await driverRef.get()
     return {status: true, data: updatedDriver.data()}
@@ -46,7 +46,7 @@ const updateDriver = async(id, body) => {
 
 const deleteDriver = async(id) => {
   try {
-    const driverRef = db.collection('Drivers').doc(id)
+    const driverRef = db.collection('operadores').doc(id)
     await driverRef.delete()
 
     return {status: true, data: `${id} deleted succesfully` }

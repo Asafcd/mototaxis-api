@@ -20,7 +20,7 @@ app.use(express.json())
 app.use('/api/v1/driver', require("./src/Routes/driverRoute"))
 app.use('/api/v1/location', require("./src/Routes/locationRoute"))
 app.use('/api/v1/button', require("./src/Routes/buttonRoute"))
-app.use('/api/vi/auth', require("./src/Routes/authRoute"))
+app.use('/api/v1/client', require("./src/Routes/clientRoute"))
 
 app.listen(app.get("port"), () => {
   console.log(`Server on port ${app.get("port")} - Bienvenidos Backeros `);
