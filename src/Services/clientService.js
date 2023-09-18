@@ -56,7 +56,7 @@ const getClientbyId = async (id) => {
     }
  }
 
- const addClient = async (client, profilePic) => {
+ const createClient = async (client, profilePic) => {
     try {
         const clientRef = await clientCollection.add({...client,
             historial: [],
@@ -110,12 +110,12 @@ const getClientbyId = async (id) => {
     }
 }
 
-// TODO Chnage to picture, add the picture to the bucket
+// TODO Change to picture, add the picture to the bucket
 
 module.exports = {
     getClientbyId,
     getTrips,
-    addClient,
+    createClient,
     updateClient,
     addTripToClient,
     deleteClient
