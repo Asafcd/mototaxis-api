@@ -90,7 +90,9 @@ const getClientbyId = async (id) => {
         const clientRef = clientCollection.doc(trip.client)
         const clientData = (await clientRef.get()).data()
         clientData.historial.push(trip.id)
-        clientData.rating.push(rating)
+        if(rating !== null){
+            clientData.rating.push(rating)
+        }
         await clientRef.update(clientData)
         return {status: true, data: clientData}
     } catch (error) {

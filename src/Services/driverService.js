@@ -70,7 +70,9 @@ const addTripToDriver = async (trip, rating) => {
       const driverRef = driverCollection.doc(trip.driver)
       const driverData = (await driverRef.get()).data()
       driverData.historial.push(trip.id)
-      driverData.rating.push(rating)
+      if(rating !== null){
+            driverData.rating.push(rating)
+        }
       await driverRef.update(driverData)
       return {status: true, data: driverData}
   } catch (error) {
