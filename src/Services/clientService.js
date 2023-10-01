@@ -6,61 +6,35 @@ const clientCollection = db.collection('clientes')
 const tripsCollection = db.collection('viajes')
 const feeCollection = db.collection('pagos')
 
-const getClientbyId = async (id) => {
-    try{
-        const clientRef = clientCollection.doc(id)
-        const clientDoc = await clientRef.get()
-        
-        if(clientDoc.exists){ return {status:true, data: clientDoc.data()} }
-        else { return {status: false, data:"No such Client document"} }
-        
-    } catch (error) {
-        throw { status: 500, error: error };
-  }
-}
-
- const getTrips = async (idRefs) => {
+const getClients = async () => {
     try {
-        const tripsRef = await tripsCollection.get()
-        const tripsDocs = tripsRef.docs
-        const trips = []
-        idRefs.forEach( (id) => {
-            const trip = tripsDocs.find( (doc) =>  doc.id == id)
-            const tripData = trip.data()
-            const feeId = trip.get("fee")._path.segments[1]
-            trips.push(tripData)
-            tripData.fee.get().then(documentSnapshot => {
-                if (documentSnapshot.exists) {
-                  console.log(documentSnapshot);
-                }
-        })
-        })
-        //trips.find((trip) => trip)
-        
-        return {status: true, data: trips}
+      const clients = await db.collection('clientes').get();
+      return {status: true, data: clients}
     } catch (error) {
-        throw { status: 500, error: error };
+      throw { status: 500, error: error };
     }
- }
-
- const getFee = async (idFee) => {
+  };
+  
+  const getClient = async (id) => {
     try {
-        const feeRef = feeCollection.doc(idFee)
-        const feeDoc = await feeRef.get()
-    
-        if(feeData.exists){ return {status:true, data: feeDoc.data()} }
-        else { return {status: false, data:"No such Fee document"} }
-        
-    } catch (error) {
-        throw { status: 500, error: error };
+      const driverRef = db.collection('clientes').doc(id)
+      const driver = await driverRef.get()
+  
+      if(driver.exists) {
+        return {status:true, data: driver.data()}
     }
- }
+      else {
+        return {status: false, data:"Client does not exist"}
+    }  
+    } catch (error) {
+      throw { status: 500, error: error };
+    }
+  };
 
  const createClient = async (client, profilePic) => {
     try {
         const clientRef = await clientCollection.add({...client,
             historial: [],
-            rating: [5],
             profilePic: profilePic,})
         const clientDoc = await clientRef.get()
         return {status: true, data: clientDoc.id()}
@@ -85,14 +59,11 @@ const getClientbyId = async (id) => {
     }
  }
 
- const addTripToClient = async (trip, rating) => {
+ const addTripToClient = async (trip) => {
     try {
-        const clientRef = clientCollection.doc(trip.client)
+        const clientRef = clientCollection.doc(trip.userId)
         const clientData = (await clientRef.get()).data()
-        clientData.historial.push(trip.id)
-        if(rating !== null){
-            clientData.rating.push(rating)
-        }
+        clientData.historial.push(trip.travelId)
         await clientRef.update(clientData)
         return {status: true, data: clientData}
     } catch (error) {
@@ -113,12 +84,11 @@ const getClientbyId = async (id) => {
 }
 
 // TODO Change to picture, add the picture to the bucket
-
 module.exports = {
-    getClientbyId,
-    getTrips,
+    getClient,
+    getClients,
     createClient,
     updateClient,
+    deleteClient,
     addTripToClient,
-    deleteClient
 }

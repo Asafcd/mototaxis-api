@@ -34,8 +34,12 @@ const getDriver = async (id) => {
     const driverRef = db.collection('operadores').doc(id)
     const driver = await driverRef.get()
 
-    if(driver.exists){ return {status:true, data: driver.data()}}
-    else{return {status: false, data:"No such document"}}
+    if(driver.exists) { 
+      return {status:true, data: driver.data()}
+    }
+    else {
+      return {status: false, data:"Driver does not exist"}
+    }
     
   } catch (error) {
     throw { status: 500, error: error };
@@ -67,9 +71,9 @@ const deleteDriver = async(id) => {
 
 const addTripToDriver = async (trip, rating) => {
   try {
-      const driverRef = driverCollection.doc(trip.driver)
+      const driverRef = driverCollection.doc(trip.driverId)
       const driverData = (await driverRef.get()).data()
-      driverData.historial.push(trip.id)
+      driverData.historial.push(trip.travelId)
       if(rating !== null){
             driverData.rating.push(rating)
         }
@@ -92,9 +96,9 @@ const driverOnline = async (id) => {
 }
 
 module.exports = {
-  createDriver,
   getDriver,
   getDrivers,
+  createDriver,
   updateDriver,
   deleteDriver,
   addTripToDriver,

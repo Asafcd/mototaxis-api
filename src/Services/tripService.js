@@ -17,9 +17,12 @@ const db = getFirestore(firebase)
 const tripCollection = db.collection('viajes')
 const feeCollection = db.collection('pagos')
 
-const createtrip = async (trip) => {
+const createTrip = async (trip) => {
   try {
-    const tripRef = await tripCollection.add({...trip})
+    const tripRef = await tripCollection.add({...trip,
+    date: Date.now(),
+    status: "inProgress",
+    paid: false,})
     const tripDoc = await tripRef.get()
     return {status: true, data: tripDoc.id()}
   } catch (error) {
@@ -27,21 +30,21 @@ const createtrip = async (trip) => {
   }
 };
 
-const getDrivers = async () => {
+const getTrips = async () => {
   try {
-    const drivers = await db.collection('operadores').get();
-    return {status: true, data: drivers}
+    const trips = await db.collection('viajes').get();
+    return {status: true, data: trips}
   } catch (error) {
     throw { status: 500, error: error };
   }
 };
 
-const getDriver = async (id) => {
+const getTrip = async (id) => {
   try {
-    const driverRef = db.collection('operadores').doc(id)
-    const driver = await driverRef.get()
+    const tripRef = db.collection('viajes').doc(id)
+    const trip = await tripRef.get()
 
-    if(driver.exists){ return {status:true, data: driver.data()}}
+    if(trip.exists){ return {status:true, data: trip.data()}}
     else{return {status: false, data:"No such document"}}
     
   } catch (error) {
@@ -49,59 +52,58 @@ const getDriver = async (id) => {
   }
 };
 
-const updateDriver = async(id, body) => {
+const updateTrip = async(id, body) => {
   try {
-    const driverRef = db.collection('operadores').doc(id)
-    await driverRef.update(body)
-    const updatedDriver = await driverRef.get()
-    return {status: true, data: updatedDriver.data()}
+    const tripRef = db.collection('viajes').doc(id)
+    await tripRef.update(body)
+    const updatedTrip = await tripRef.get()
+    return {status: true, data: updatedTrip.data()}
   } catch (error) {
     throw { status: error.status||500, error: error };
   }
 };
 
-const deleteDriver = async(id) => {
+const deleteTrip = async(id) => {
   try{
-    const driverRef = driverCollection.doc(id)
-    if(driverRef.exists){
-        const driverDoc = await driverRef.delete()
-    } else {throw {status: false, data: "No such driver document"}}
-    return {status: true, data: driverDoc.data()}
+    const tripRef = tripCollection.doc(id)
+    if(tripRef.exists){
+        const tripDoc = await tripRef.delete()
+    } else {throw {status: false, data: "No such trip document"}}
+    return {status: true, data: tripDoc.data()}
   } catch (error) {
       throw { status: 500, error: error };
   }
 };
 
-const addTripToDriver = async (trip, rating) => {
+const changeStatus = async(id, status) => {
   try {
-      const driverRef = driverCollection.doc(trip.driver)
-      const driverData = (await driverRef.get()).data()
-      driverData.historial.push(trip.id)
-      driverData.rating.push(rating)
-      await driverRef.update(driverData)
-      return {status: true, data: driverData}
+    const tripRef = db.collection('viajes').doc(id)
+    await tripRef.update({status: status})
+    const updatedTrip = await tripRef.get()
+    return {status: true, data: updatedTrip.data()}
   } catch (error) {
-      throw { status: 500, error: error };
+    throw { status: error.status||500, error: error };
   }
 }
 
-const driverOnline = async (id) => {
+
+const payTrip = async(id) => {
   try {
-    const driverRef = driverCollection.doc(trip.driver)
-    const driverData = (await driverRef.get()).data()
-    driverData.disponibilidad = true
-    await driverRef.update(driverData)
+    const tripRef = db.collection('viajes').doc(id)
+    await tripRef.update({paid: true})
+    const updatedTrip = await tripRef.get()
+    return {status: true, data: updatedTrip.data()}
   } catch (error) {
-    throw { status: 500, error: error };
+    throw { status: error.status||500, error: error };
   }
 }
 
 module.exports = {
-  createDriver,
-  getDriver,
-  getDrivers,
-  updateDriver,
-  deleteDriver,
-  addTripToDriver,
-  driverOnline,
+  createTrip,
+  getTrip,
+  getTrips,
+  updateTrip,
+  deleteTrip,
+  changeStatus,
+  payTrip,
 };
