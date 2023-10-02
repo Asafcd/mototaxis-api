@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.use('/api/v1/driver', require("./src/Routes/driverRoute"))
-app.use('/api/v1/location', require("./src/Routes/locationRoute"))
+app.use('/api/v1/trip', require("./src/Routes/locationRoute"))
 app.use('/api/v1/button', require("./src/Routes/buttonRoute"))
 app.use('/api/v1/client', require("./src/Routes/clientRoute"))
 

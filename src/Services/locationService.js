@@ -4,7 +4,7 @@ const db = getFirestore(firebase)
 
 const createLocation = async (body) => {
   try {
-    const res = await db.collection('Location').add(body)
+    const res = await db.collection('viajes').add(body)
     return {status: true, data: res};
   } catch (error) {
     throw { status: 500, error};
@@ -13,7 +13,7 @@ const createLocation = async (body) => {
 
 const getLocations = async() => {
   try {
-    const locations = await db.collection('Location').get();
+    const locations = await db.collection('viajes').get();
     return {status: true, data: locations}
   } catch (error) {
     throw { status: 500, error: error };
@@ -22,7 +22,7 @@ const getLocations = async() => {
 
 const getLocation = async (id) => {
   try {
-    const locationRef = db.collection('Location').doc(id)
+    const locationRef = db.collection('viajes').doc(id)
     const location = await locationRef.get()
 
     if(location.exists){ return {status:true, data: location.data()}}
@@ -35,7 +35,7 @@ const getLocation = async (id) => {
 
 const updateLocation = async(id, body) => {
   try {
-    const locationRef = db.collection('Location').doc(id)
+    const locationRef = db.collection('viajes').doc(id)
     await locationRef.update(body)
     const updatedLocation = await locationRef.get()
     return {status: true, data: updatedLocation.data()}
@@ -46,7 +46,7 @@ const updateLocation = async(id, body) => {
 
 const deleteLocation = async(id) => {
   try {
-    const locationRef = db.collection('Location').doc(id)
+    const locationRef = db.collection('viajes').doc(id)
     await locationRef.delete()
 
     return {status: true, data: `${id} deleted succesfully` }

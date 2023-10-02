@@ -1,5 +1,35 @@
+@BaseURL = http://localhost:100/api/v1
 
-# getClient
-GET http://localhost:100/api/v1/client/aoVkXUKKB8LSt48jcRWc
+### getClient
+GET {{BaseURL}}/client/aoVkXUKKB8LSt48jcRWc
+
+#### getDrivers
+GET {{BaseURL}}/driver/
+
+#### getDriver
+GET {{BaseURL}}/driver/cVWC1Rard91gIRqzTQd0
+
+#### getLocation
+GET {{BaseURL}}/trip/
+
+#### postLocation
+POST {{BaseURL}}/trip/
+
+{
+    "latitude": 1.0,
+    "longitude": 1.0,
+    "driver_id": "cVWC1Rard91gIRqzTQd0",
+    "client_id": "aoVkXUKKB8LSt48jcRWc",
+    "timestamp": "2019-01-01T00:00:00Z",
+    "pickup_adress": "Rua 1",
+    "dropoff_adress": "Rua 2",
+    "pickup_id": "1",
+    "dropoff_id": "2",
+    "started_at": "2019-01-01T00:00:00Z",
+    "finished_at": "2019-01-01T00:20:00Z",
+    "fee": 15.0,
+    "status": "requested",
+
+}
 
 
