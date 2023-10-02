@@ -2,12 +2,21 @@ const { getFirestore } = require('firebase-admin/firestore');
 const firebase = require('../../firebase')
 const db = getFirestore(firebase)
 
-const createDriver = async (body) => {
+const driverCollection = db.collection('operadores')
+const tripsCollection = db.collection('viajes')
+const feeCollection = db.collection('pagos')
+
+const createDriver = async (driver) => {
   try {
-    const res = await db.collection('operadores').add(body)
-    return {status: true, data: res};
+    const driverRef = await driverCollection.add({...driver,
+        disponibilidad: false,
+        historial: [],
+        rating: [5],
+        profilePic: profilePic,})
+    const driverDoc = await driverRef.get()
+    return {status: true, data: driverDoc.id()}
   } catch (error) {
-    throw { status: 500, error};
+      throw { status: 500, error: error };
   }
 };
 
@@ -25,8 +34,12 @@ const getDriver = async (id) => {
     const driverRef = db.collection('operadores').doc(id)
     const driver = await driverRef.get()
 
-    if(driver.exists){ return {status:true, data: driver.data()}}
-    else{return {status: false, data:"No such document"}}
+    if(driver.exists) { 
+      return {status:true, data: driver.data()}
+    }
+    else {
+      return {status: false, data:"Driver does not exist"}
+    }
     
   } catch (error) {
     throw { status: 500, error: error };
@@ -45,21 +58,49 @@ const updateDriver = async(id, body) => {
 };
 
 const deleteDriver = async(id) => {
-  try {
-    const driverRef = db.collection('operadores').doc(id)
-    await driverRef.delete()
-
-    return {status: true, data: `${id} deleted succesfully` }
-    
+  try{
+    const driverRef = driverCollection.doc(id)
+    if(driverRef.exists){
+        const driverDoc = await driverRef.delete()
+    } else {throw {status: false, data: "No such driver document"}}
+    return {status: true, data: driverDoc.data()}
   } catch (error) {
-    throw { status: 500, error: error || 'Service method error' };
+      throw { status: 500, error: error };
   }
 };
 
+const addTripToDriver = async (trip, rating) => {
+  try {
+      const driverRef = driverCollection.doc(trip.driverId)
+      const driverData = (await driverRef.get()).data()
+      driverData.historial.push(trip.travelId)
+      if(rating !== null){
+            driverData.rating.push(rating)
+        }
+      await driverRef.update(driverData)
+      return {status: true, data: driverData}
+  } catch (error) {
+      throw { status: 500, error: error };
+  }
+}
+
+const driverOnline = async (id) => {
+  try {
+    const driverRef = driverCollection.doc(trip.driver)
+    const driverData = (await driverRef.get()).data()
+    driverData.disponibilidad = true
+    await driverRef.update(driverData)
+  } catch (error) {
+    throw { status: 500, error: error };
+  }
+}
+
 module.exports = {
-  createDriver,
   getDriver,
   getDrivers,
+  createDriver,
   updateDriver,
   deleteDriver,
+  addTripToDriver,
+  driverOnline,
 };
