@@ -4,10 +4,10 @@ const router = express.Router();
 const tripsController = require('../Controllers/tripController')
 
 router
-    .post('/', tripsController.createLocation )
-    .get('/', tripsController.gettrips )
-    .get('/:id', tripsController.getLocation )
-    .put('/:id', tripsController.updateLocation )
-    .delete('/:id', tripsController.deleteLocation )
+    .post('/', tripsController.createTrip )
+    .get('/', tripsController.getTrip )
+    .get('/:id', tripsController.getTrips )
+    .put('/:id', tripsController.updateTrip )
+    .delete('/:id', tripsController.deleteTrip )
 
 module.exports = router

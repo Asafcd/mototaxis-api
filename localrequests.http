@@ -9,8 +9,8 @@ GET {{BaseURL}}/driver/
 #### getDriver
 GET {{BaseURL}}/driver/cVWC1Rard91gIRqzTQd0
 
-#### getLocation
-GET {{BaseURL}}/trip/
+#### getTrips
+GET {{BaseURL}}/trip
 
 #### postLocation
 POST {{BaseURL}}/trip/
