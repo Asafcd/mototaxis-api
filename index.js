@@ -17,10 +17,16 @@ app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+
+
+
+
 app.use('/api/v1/driver', require("./src/Routes/driverRoute"))
 app.use('/api/v1/trip', require("./src/Routes/tripRoute"))
 app.use('/api/v1/button', require("./src/Routes/buttonRoute"))
 app.use('/api/v1/client', require("./src/Routes/clientRoute"))
+app.use('/api/v1/auth', require("./src/Routes/authRoute"));
+
 
 app.listen(app.get("port"), () => {
   console.log(`Server on port ${app.get("port")} - Bienvenidos Backeros `);
