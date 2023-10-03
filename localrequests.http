@@ -32,4 +32,13 @@ POST {{BaseURL}}/trip/
 
 }
 
+#### PostLogin
+POST {{BaseURL}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "asaf",
+    "password": "123456"
+}
+
 
