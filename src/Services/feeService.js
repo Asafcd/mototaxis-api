@@ -6,8 +6,7 @@ const feeCollection = db.collection('pagos')
 
 const createFee = async (fee) => {
   try {
-    const feeRef = await feeCollection.add({...fee,
-      date: Date.now(),})
+    const feeRef = await feeCollection.add({...fee,})
     const feeDoc = await feeRef.get()
     return {status: true, data: feeDoc.id()}
   } catch (error) {
