@@ -26,6 +26,7 @@ app.use('/api/v1/trip', require("./src/Routes/tripRoute"))
 app.use('/api/v1/button', require("./src/Routes/buttonRoute"))
 app.use('/api/v1/client', require("./src/Routes/clientRoute"))
 app.use('/api/v1/auth', require("./src/Routes/authRoute"));
+app.use('/api/v1/fee', require("./src/Routes/feeRoute"));
 
 
 app.listen(app.get("port"), () => {
