@@ -46,6 +46,6 @@ Content-Type: application/json
 GET {{BaseURL}}/fee
 
 #### getClient
-GET {{BaseURL}}/client/
+GET {{localURL}}/client
 
 
