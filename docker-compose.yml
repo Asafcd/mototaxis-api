@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-   cenote-server:
+   mototaxi-server:
       build: .
       volumes:
       - ./src:/usr/app/src

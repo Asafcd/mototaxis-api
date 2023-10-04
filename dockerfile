@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 100
-CMD [ "node", "./src/index.js" ]
+CMD [ "node", "./index.js" ]
