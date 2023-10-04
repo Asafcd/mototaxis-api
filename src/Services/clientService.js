@@ -75,12 +75,17 @@ const getClients = async () => {
     try{
         const clientRef = clientCollection.doc(id)
         if(clientRef.exists){
-            const clientDoc = await clientRef.delete()
+            await clientRef.delete()
+            return {status: true, data: "Succesfully deleted"}
         } else {throw {status: false, data: "No such Client document"}}
-        return {status: true, data: clientDoc.data()}
     } catch (error) {
         throw { status: 500, error: error };
     }
+}
+
+const getTripByClient = async(id_client )=>{
+    //TODO
+    return {status: true, data: "Trip data"}
 }
 
 // TODO Change to picture, add the picture to the bucket
@@ -91,4 +96,5 @@ module.exports = {
     updateClient,
     deleteClient,
     addTripToClient,
+    getTripByClient
 }
