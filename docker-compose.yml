@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+   cenote-server:
+      build: .
+      volumes:
+      - ./src:/usr/app/src
+      ports:
+      - 100:80   
