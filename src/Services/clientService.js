@@ -9,7 +9,7 @@ const feeCollection = db.collection('pagos')
 const getClients = async () => {
     try {
       const clients = await db.collection('clientes').get();
-      return {status: true, data: clients}
+      return {status: true, data: clients.docs}
     } catch (error) {
       throw { status: 500, error: error };
     }
@@ -17,11 +17,11 @@ const getClients = async () => {
   
   const getClient = async (id) => {
     try {
-      const driverRef = db.collection('clientes').doc(id)
-      const driver = await driverRef.get()
+      const clientRef = db.collection('clientes').doc(id)
+      const client = await clientRef.get()
   
-      if(driver.exists) {
-        return {status:true, data: driver.data()}
+      if(client.exists) {
+        return {status:true, data: client.data()}
     }
       else {
         return {status: false, data:"Client does not exist"}
@@ -83,9 +83,15 @@ const getClients = async () => {
     }
 }
 
-const getTripByClient = async(id_client )=>{
-    //TODO
-    return {status: true, data: "Trip data"}
+const getTripByClient = async (id) => {
+    try{
+        const clientRef = clientCollection.doc(id)
+        const clientData = (await clientRef.get()).data()
+        const trips = clientData.historial
+        return {status: true, data: trips};
+    } catch (error) {
+        throw { status: 500, error: error };
+    }
 }
 
 // TODO Change to picture, add the picture to the bucket

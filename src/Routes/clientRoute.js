@@ -1,13 +1,19 @@
 const express = require('express')
 const router = express.Router();
 
-const {getClient} = require('../Controllers/clientController')
+const {
+    createClient,
+    getClient,
+    getClients,
+    updateClient,
+    deleteClient 
+} = require('../Controllers/clientController')
 
 router
-   //.post('/', createClient)
-    //.get('/', getClients )
+    .post('/', createClient)
+    .get('/', getClients )
     .get('/:id', getClient )
-    //.put('/:id', )
-    //.delete('/:id', )
+    .put('/:id', updateClient )
+    .delete('/:id', deleteClient)
 
 module.exports = router

@@ -26,7 +26,7 @@ const getClient = async (req, res) => {
     try {
         const {status, data} = await clientService.getClient(id)
         if(status) { 
-            const { data: tripData} = await tripService.getTripByClient(id)
+            const { data: tripData} = await clientService.getTripByClient(id)
             const clientData = { ...data, historial: tripData}
             res.status(200).send({clientData}) 
         }
