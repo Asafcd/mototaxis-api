@@ -23,16 +23,19 @@ const createTrip = async (req, res) => {
       
 };
 
-const getTrip = async(req,res) => {
+const getTrips = async(req,res) => {
     try {
         let tripsData = []
-       const {data} = await tripService.getTrips()
-       data.forEach((doc) => {
-            let temptrip = { ID: doc.id, ...doc.data(),  }
-            tripsData.push(temptrip)
-        })
+       const {status, data} = await tripService.getTrips()
+       if (status){
+
+           data.forEach((doc) => {
+                let temptrip = { ID: doc.id, ...doc.data(),  }
+                tripsData.push(temptrip)
+            })
+            res.status(200).send({data: tripsData})
+       } else{ res.status(400).send({data: 'no trips found'})}
     
-        res.status(200).send({data: tripsData})
     } catch (err) {
         res
         .status(err?.status || 400)
@@ -40,7 +43,7 @@ const getTrip = async(req,res) => {
     }
 };
 
-const getTrips = async (req,res) => {
+const getTrip = async (req,res) => {
     const {id} = req.params
     const {status, error} = validateId(id)
     if(status){
