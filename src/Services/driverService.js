@@ -23,7 +23,7 @@ const createDriver = async (driver) => {
 const getDrivers = async () => {
   try {
     const drivers = await db.collection('operadores').get();
-    return {status: true, data: drivers}
+    return {status: true, data: drivers.docs}
   } catch (error) {
     throw { status: 500, error: error };
   }

@@ -33,7 +33,7 @@ const createTrip = async (trip) => {
 const getTrips = async () => {
   try {
     const trips = await db.collection('viajes').get();
-    return {status: true, data: trips}
+    return {status: true, data: trips.doc}
   } catch (error) {
     throw { status: 500, error: error };
   }
