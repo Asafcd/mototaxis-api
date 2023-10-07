@@ -37,7 +37,7 @@ const getClients = async () => {
             historial: [],
             profilePic: profilePic,})
         const clientDoc = await clientRef.get()
-        return {status: true, data: clientDoc.id()}
+        return {status: true, data: clientDoc.id}
     } catch (error) {
         throw { status: 500, error: error };
     }

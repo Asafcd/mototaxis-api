@@ -4,21 +4,23 @@ const {check, validationResult} = require("express-validator")
 
 const createClient = async (req,res) => {
     const body = req.body
-    const {status, error} = validateBody(body)
-    if(status){
+    //const {status, error} = validateBody(body)
+    console.log(body)
+   // if(status){
         try {
            const {status, data} = await clientService.createClient(body, 'https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png')
 
            status? res.status(200).send({message: 'Client successfully created! ID: ', data}) : res.status(400).send({message: 'Client could not be created', data})
                 
         } catch (err) {
+            console.log(err)
             res
             .status(err?.status || 500)
-            .send({ status: "FAILED", data: { error: err?.message || err } });
+            .send({ status: "FAILED", data: { error: err.error || err } });
         }
-    } else{
+    /* } else{
         res.status(400).send({status: "Failed type validation", data: error})
-    }
+    } */
 };
 
 const getClient = async (req, res) => {

@@ -48,4 +48,15 @@ GET {{BaseURL}}/fee
 #### getClient
 GET {{localURL}}/client
 
+#### CreateClient
+POST {{localURL}}/client/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "cepillin",
+    "apellidos": "perez",
+    "correo": "nombre@correo.com",
+    "telefono": "1234567890",
+    "direccion": "direccion"
+}
 
