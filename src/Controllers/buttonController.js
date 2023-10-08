@@ -25,7 +25,7 @@ const getReports = async (req,res) => {
             const tempReport = {ID: report.id, ...report.data()}
             reportsData.push(tempReport);
         });
-        res.status(200).send({data: reportsData})
+        res.status(200).send(reportsData)
     } catch (err) {
         res
         .status(err?.status || 500)

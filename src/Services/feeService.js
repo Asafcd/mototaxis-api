@@ -16,8 +16,9 @@ const createFee = async (fee) => {
 
 const getFees = async () => {
   try {
-    const fees = (await db.collection('pagos').get()).docs
-    return {status: true, data: fees.doc}
+    const fees = await db.collection('pagos').get()
+    //console.log(fees.docs)
+    return {status: true, data: fees.docs}
   } catch (error) {
     throw { status: 500, error: error };
   }

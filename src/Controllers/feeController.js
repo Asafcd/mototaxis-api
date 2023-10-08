@@ -20,7 +20,12 @@ const createFee = async (req, res) => {
 const getFees = async (req, res) => {
     try {
         const { status, data } = await feeService.getFees();
-        status ? res.status(200).send({ data }) : res.status(400).send({ data });
+        const feeData = [];
+        data.forEach((doc) => {
+            let tempFee = { ID: doc.id, ...doc.data() };
+            feeData.push(tempFee);
+        });
+        status ? res.status(200).send( feeData ) : res.status(500).send({ feeData });
     } catch (err) {
         res
             .status(err?.status || 500)

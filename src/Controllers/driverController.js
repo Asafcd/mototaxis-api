@@ -25,7 +25,7 @@ const getDrivers = async (req,res) => {
             const tempDriver = {ID: driver.id, ...driver.data()}
             driversData.push(tempDriver);
         });
-        res.status(200).send({data: driversData})
+        res.status(200).send(driversData)
     } catch (err) {
         res
         .status(err?.status || 500)

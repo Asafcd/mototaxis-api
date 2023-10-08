@@ -26,10 +26,14 @@ GET {{BaseURL}}/driver/
 GET {{BaseURL}}/driver/cVWC1Rard91gIRqzTQd0
 
 #### getTrips
-GET {{BaseURL}}/trip
+//GET {{BaseURL}}/trip/
+GET {{localURL}}/trip/
+
+###getTrip by id
+GET {{BaseURL}}/trip/3gVBCjoa5eVcucmWALQX
 
 #### postLocation
-POST {{BaseURL}}/trip/
+POST {{localURL}}/trip/
 
 {
     "latitude": 1.0,
@@ -58,5 +62,8 @@ Content-Type: application/json
 }
 
 #### getFees
-GET {{BaseURL}}/fee
+GET {{localURL}}/fee
+
+#### getFee by id
+GET {{localURL}}/fee/8SAct55eAFFMyP8xgHxN
 

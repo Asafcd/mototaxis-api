@@ -19,21 +19,25 @@ const feeCollection = db.collection('pagos')
 
 const createTrip = async (trip) => {
   try {
-    const tripRef = await tripCollection.add({...trip,
-    date: Date.now(),
-    status: "inProgress",
-    paid: false,})
+    const tripRef = await tripCollection.add({
+      ...trip,
+      date: Date.now(),
+      status: "inProgress",
+      paid: false,
+    })
     const tripDoc = await tripRef.get()
-    return {status: true, data: tripDoc.id()}
+    return { status: true, data: tripDoc.id }
   } catch (error) {
-      throw { status: 500, error: error };
+    console.log(error.message)
+    throw { status: 500, error: error.message };
   }
 };
 
 const getTrips = async () => {
   try {
     const trips = await db.collection('viajes').get();
-    return {status: true, data: trips.doc}
+
+    return { status: true, data: trips.docs }
   } catch (error) {
     throw { status: 500, error: error };
   }
@@ -44,57 +48,57 @@ const getTrip = async (id) => {
     const tripRef = db.collection('viajes').doc(id)
     const trip = await tripRef.get()
 
-    if(trip.exists){ return {status:true, data: trip.data()}}
-    else{return {status: false, data:"No such document"}}
-    
+    if (trip.exists) { return { status: true, data: trip.data() } }
+    else { return { status: false, data: "No such document" } }
+
   } catch (error) {
     throw { status: 500, error: error };
   }
 };
 
-const updateTrip = async(id, body) => {
+const updateTrip = async (id, body) => {
   try {
     const tripRef = db.collection('viajes').doc(id)
     await tripRef.update(body)
     const updatedTrip = await tripRef.get()
-    return {status: true, data: updatedTrip.data()}
+    return { status: true, data: updatedTrip.data() }
   } catch (error) {
-    throw { status: error.status||500, error: error };
+    throw { status: error.status || 500, error: error };
   }
 };
 
-const deleteTrip = async(id) => {
-  try{
+const deleteTrip = async (id) => {
+  try {
     const tripRef = tripCollection.doc(id)
-    if(tripRef.exists){
-        const tripDoc = await tripRef.delete()
-    } else {throw {status: false, data: "No such trip document"}}
-    return {status: true, data: tripDoc.data()}
+    if (tripRef.exists) {
+      const tripDoc = await tripRef.delete()
+    } else { throw { status: false, data: "No such trip document" } }
+    return { status: true, data: tripDoc.data() }
   } catch (error) {
-      throw { status: 500, error: error };
+    throw { status: 500, error: error };
   }
 };
 
-const changeStatus = async(id, status) => {
+const changeStatus = async (id, status) => {
   try {
     const tripRef = db.collection('viajes').doc(id)
-    await tripRef.update({status: status})
+    await tripRef.update({ status: status })
     const updatedTrip = await tripRef.get()
-    return {status: true, data: updatedTrip.data()}
+    return { status: true, data: updatedTrip.data() }
   } catch (error) {
-    throw { status: error.status||500, error: error };
+    throw { status: error.status || 500, error: error };
   }
 }
 
 
-const payTrip = async(id) => {
+const payTrip = async (id) => {
   try {
     const tripRef = db.collection('viajes').doc(id)
-    await tripRef.update({paid: true})
+    await tripRef.update({ paid: true })
     const updatedTrip = await tripRef.get()
-    return {status: true, data: updatedTrip.data()}
+    return { status: true, data: updatedTrip.data() }
   } catch (error) {
-    throw { status: error.status||500, error: error };
+    throw { status: error.status || 500, error: error };
   }
 }
 

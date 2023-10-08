@@ -6,10 +6,11 @@ const createTrip = async (req, res) => {
     //const {status, error} = validateBody(body)
    // if(status){
         try {
-            const {coordinates, coordinates_delta} = body
-            const geoP = tripService.toGeoPoint(coordinates)
-            const geoP_delta = tripService.toGeoPoint(coordinates_delta)
-            const trip = { ...body, coordinates: geoP, coordinates_delta: geoP_delta}
+            //const {coordinates, coordinates_delta} = body
+            //const geoP = tripService.toGeoPoint(coordinates)
+            //const geoP_delta = tripService.toGeoPoint(coordinates_delta)
+            //const trip = { ...body, coordinates: geoP, coordinates_delta: geoP_delta}
+            const trip = { ...body}
             const {data} = await tripService.createTrip(trip)
             res.status(200).send({message: 'trip succesfully created', data})
         } catch (err) {
@@ -28,12 +29,12 @@ const getTrips = async(req,res) => {
         let tripsData = []
        const {status, data} = await tripService.getTrips()
        if (status){
-
            data.forEach((doc) => {
+               console.log(doc.data())
                 let temptrip = { ID: doc.id, ...doc.data(),  }
                 tripsData.push(temptrip)
             })
-            res.status(200).send({data: tripsData})
+            res.status(200).send(tripsData)
        } else{ res.status(400).send({data: 'no trips found'})}
     
     } catch (err) {
