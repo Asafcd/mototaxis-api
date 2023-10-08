@@ -63,23 +63,24 @@ const getClients = async (req, res) => {
 const updateClient = async (req, res) => {
     const body = req.body
     const { id } = req.params
-    const { status, error } = validateBody(body)
-    if (status) {
+    //const { status, error } = validateBody(body)
+    //if (status) {
         try {
             const { status, data } = await clientService.updateClient(body, id)
-            status ? res.status(200).send({ data }) : res.status(400).send({ data })
+            status ? res.status(200).send({ message: `Cliente ${id} actualizado: `, data }) : res.status(400).send({ data })
         } catch (err) {
             res
                 .status(err?.status || 500)
                 .send({ status: "FAILED", data: { error: err?.message || err } });
         }
-    } else {
+    /* } else {
         res.status(400).send({ status: "Failed type validation", data: error })
-    }
+    } */
 }
 
 const deleteClient = async (req, res) => {
     const { id } = req.params
+    console.log(id)
     try {
         const { status, data } = await clientService.deleteClient(id)
         status ? res.status(200).send({ data }) : res.status(400).send({ data })

@@ -73,9 +73,11 @@ const getClients = async () => {
 
  const deleteClient = async (id) => {
     try{
-        const clientRef = clientCollection.doc(id)
+        const clientDoc = clientCollection.doc(id)
+        const clientRef = await clientDoc.get()
         if(clientRef.exists){
-            await clientRef.delete()
+            console.log(clientRef)
+            await clientDoc.delete()
             return {status: true, data: "Succesfully deleted"}
         } else {throw {status: false, data: "No such Client document"}}
     } catch (error) {
