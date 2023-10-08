@@ -5,8 +5,8 @@ const tripsController = require('../Controllers/tripController')
 
 router
     .post('/', tripsController.createTrip )
-    .get('/', tripsController.getTrip )
-    .get('/:id', tripsController.getTrips )
+    .get('/', tripsController.getTrips )
+    .get('/:id', tripsController.getTrip )
     .put('/:id', tripsController.updateTrip )
     .delete('/:id', tripsController.deleteTrip )
 

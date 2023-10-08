@@ -1,10 +1,10 @@
 const tripService = require('../Services/tripService')
-const {validateBody, validateId} = require('../Validators/tripValidator')
+const {validateBody, validateId} = require('../Validators/driverValidator')
 
 const createTrip = async (req, res) => {
     const body = req.body
-    const {status, error} = validateBody(body)
-    if(status){
+    //const {status, error} = validateBody(body)
+   // if(status){
         try {
             const {coordinates, coordinates_delta} = body
             const geoP = tripService.toGeoPoint(coordinates)
@@ -17,9 +17,9 @@ const createTrip = async (req, res) => {
             .status(err?.status || 400)
             .send({ status: "FAILED", data: { error: err?.message || err } });
         }
-    }else{
+    /* }else{
         res.status(400).send({status: "Failed type validation", data: error })
-    }
+    } */
       
 };
 
