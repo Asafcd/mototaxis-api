@@ -31,13 +31,31 @@ const getClients = async () => {
     }
   };
 
+  const getClientByEmail = async (email) => {
+    try {
+      const clientRef = db.collection('clientes').where("correo" , "==", email)
+      const client = await clientRef.get()
+      const clientData = {...client.data(), id: client.id}
+  
+      if(client.exists) {
+        return {status:true, data: clientData}
+    }
+      else {
+        return {status: false, data:"Client does not exist"}
+    }  
+    } catch (error) {
+      throw { status: 500, error: error };
+    }
+  };
+
  const createClient = async (client, profilePic) => {
     try {
         const clientRef = await clientCollection.add({...client,
             historial: [],
             profilePic: profilePic,})
         const clientDoc = await clientRef.get()
-        return {status: true, data: clientDoc.id}
+        const clientData = {...clientDoc.data(), id: clientDoc.id}
+        return {status: true, data: clientData}
     } catch (error) {
         throw { status: 500, error: error };
     }
@@ -104,5 +122,6 @@ module.exports = {
     updateClient,
     deleteClient,
     addTripToClient,
-    getTripByClient
+    getTripByClient,
+    getClientByEmail
 }

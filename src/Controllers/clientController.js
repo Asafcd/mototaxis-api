@@ -8,14 +8,14 @@ const bcrypt = require('bcrypt');
 
 const createClient = async (req, res) => {
     const body = req.body
-    const imagen = req.file
+    const profilePic = req.file
     //const {status, error} = validateBody(body)
     //console.log(body)
     // if(status){
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(body.password, salt);
-        const fileName = imagen.originalname
+        const fileName = profilePic.originalname
         const params = {
             Bucket: BUCKET_NAME,
             Key: fileName,
@@ -27,9 +27,13 @@ const createClient = async (req, res) => {
         console.log(bucket)
         const client = { ...body, password: hashedPassword }
         const { status, data } = await clientService.createClient(client, fileName)
+        const token = jwt.sign({ _id: data.id }, "privateKey")
 
-        status ? res.status(200).send({ message: 'Client successfully created! ID: ', data }) : res.status(400).send({ message: 'Client could not be created', data })
-
+        status ? res
+        .header('auth-token', token)
+        .status(200)
+        .send({ message: 'Client successfully created! ID: ', data, token }) : res.status(400).send({ message: 'Client could not be created', data })
+        
     } catch (err) {
         console.log(err)
         res
