@@ -1,3 +1,4 @@
 node_modules
 .env
 localrequests.http
+node_modules/passport/CHANGELOG.md
