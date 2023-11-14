@@ -2,32 +2,23 @@ const { getFirestore } = require('firebase-admin/firestore');
 const firebase = require('../../firebase')
 const db = getFirestore(firebase)
 
-const driverCollection = db.collection('operadores')
-const tripsCollection = db.collection('viajes')
-const feeCollection = db.collection('pagos')
+const driverSchema = require('../models/driver')
 
-const createDriver = async (driver) => {
+const getDrivers = async () => { 
   try {
-    const driverRef = await driverCollection.add({...driver,
-        disponibilidad: false,
-        historial: [],
-        rating: [5],
-        profilePic: profilePic,})
-    const driverDoc = await driverRef.get()
-    return {status: true, data: driverDoc.id()}
-  } catch (error) {
-      throw { status: 500, error: error };
-  }
-};
+      return await driverSchema.find()
+  } catch (err) { throw { status: 500, error: err } }    
+}
 
-const getDrivers = async () => {
-  try {
-    const drivers = await db.collection('operadores').get();
-    return {status: true, data: drivers.docs}
-  } catch (error) {
-    throw { status: 500, error: error };
-  }
-};
+const createDriver = async (_driver) => {
+  try{
+      const driver = new driverSchema(_driver)
+      console.log(driver)
+      const newDriver = await cenote.save()
+      return newDriver._id
+       
+  } catch (error) { throw { status: 500, message: error?.message || error }; }
+}
 
 const getDriver = async (id) => {
   try {

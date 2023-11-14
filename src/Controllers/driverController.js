@@ -19,12 +19,9 @@ const createDriver = async (req,res) => {
 };
 const getDrivers = async (req,res) => {
     try {
-        const driversData = []
-        const {data} = await driverService.getDrivers()
-        data.forEach((driver) => {
-            const tempDriver = {ID: driver.id, ...driver.data()}
-            driversData.push(tempDriver);
-        });
+        
+        const driversData = await driverService.getDrivers()
+       
         res.status(200).send(driversData)
     } catch (err) {
         res

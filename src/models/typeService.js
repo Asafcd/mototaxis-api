@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+const { Schema, model } = require("mongoose");
 
 const typeServiceSchema = new Schema({
     _id: { type: Schema.Types.ObjectId, auto: true },
@@ -8,5 +8,5 @@ const typeServiceSchema = new Schema({
     statusMap: { type: String }
 });
 
-const TypeService = mongoose.model('TypeService', typeServiceSchema);
+const TypeService = model('TypeService', typeServiceSchema);
 module.exports = TypeService
