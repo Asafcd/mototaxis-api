@@ -5,19 +5,19 @@ const db = getFirestore(firebase)
 const driverSchema = require('../models/driver')
 
 const createDriver = async (_driver) => {
-  try{
-      const driver = new driverSchema(_driver)
-      console.log(driver)
-      const newDriver = await cenote.save()
-      return newDriver._id
-       
+  try {
+    const driver = new driverSchema(_driver)
+    console.log(driver)
+    const newDriver = await driver.save()
+    return { status: true, data: newDriver._id }
+
   } catch (error) { throw { status: 500, message: error?.message || error }; }
 }
 
-const getDrivers = async () => { 
+const getDrivers = async () => {
   try {
-      return await driverSchema.find()
-  } catch (err) { throw { status: 500, error: err } }    
+    return await driverSchema.find()
+  } catch (err) { throw { status: 500, error: err } }
 }
 
 
@@ -25,53 +25,48 @@ const getDriver = async (id) => {
   try {
     const driverRef = await driverSchema.findById(id)
 
-    if(!driverRef) { 
-      return {status:false, data: "Driver does not exist"}
+    if (!driverRef) {
+      return { status: false, data: "Driver does not exist" }
     }
-    console.log(driverRef)
-    return {status: true, data: driverRef}
-    
-    
+    //console.log(driverRef)
+    return { status: true, data: driverRef }
+
   } catch (error) {
     throw { status: 500, error: error };
   }
 };
 
-const updateDriver = async(id, body) => {
+const updateDriver = async (id, body) => {
   try {
-    const driverRef = db.collection('operadores').doc(id)
-    await driverRef.update(body)
-    const updatedDriver = await driverRef.get()
-    return {status: true, data: updatedDriver.data()}
-  } catch (error) {
-    throw { status: error.status||500, error: error };
-  }
-};
+    //console.log("entrando a updated")
+    await driverSchema.findByIdAndUpdate(id, body, { runValidators: true, returnOriginal: false })
+    //console.log(updatedDriver)
+    return { status: true, data: "Driver updated successfully" }
+  } catch (error) { throw { status: error?.status || 500, message: error?.message || error } }
 
-const deleteDriver = async(id) => {
-  try{
-    const driverRef = driverCollection.doc(id)
-    if(driverRef.exists){
-        const driverDoc = await driverRef.delete()
-    } else {throw {status: false, data: "No such driver document"}}
-    return {status: true, data: driverDoc.data()}
-  } catch (error) {
-      throw { status: 500, error: error };
-  }
-};
+}
+
+const deleteDriver = async (id) => {
+  try {
+    await driverSchema.findByIdAndRemove(id)
+    return { status: true, data: "Driver deleted successfully" }
+  } catch (error) { throw { status: error?.status || 500, message: error?.message || error } }
+
+}
+
 
 const addTripToDriver = async (trip, rating) => {
   try {
-      const driverRef = driverCollection.doc(trip.driverId)
-      const driverData = (await driverRef.get()).data()
-      driverData.historial.push(trip.travelId)
-      if(rating !== null){
-            driverData.rating.push(rating)
-        }
-      await driverRef.update(driverData)
-      return {status: true, data: driverData}
+    const driverRef = driverCollection.doc(trip.driverId)
+    const driverData = (await driverRef.get()).data()
+    driverData.historial.push(trip.travelId)
+    if (rating !== null) {
+      driverData.rating.push(rating)
+    }
+    await driverRef.update(driverData)
+    return { status: true, data: driverData }
   } catch (error) {
-      throw { status: 500, error: error };
+    throw { status: 500, error: error };
   }
 }
 
