@@ -1,4 +1,4 @@
-const buttonService = require('../Services/buttonService')
+const buttonService = require('../Services/reportService')
 const {validateBody, validateId} = require('../Validators/buttonValidator')
 
 const createReport = async (req,res) => {

@@ -1,6 +1,3 @@
-const { getFirestore } = require('firebase-admin/firestore');
-const firebase = require('../../firebase')
-
 const driverSchema = require('../models/driver')
 
 const createDriver = async (_driver) => {
