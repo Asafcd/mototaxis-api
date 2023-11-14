@@ -4,12 +4,6 @@ const db = getFirestore(firebase)
 
 const driverSchema = require('../models/driver')
 
-const getDrivers = async () => { 
-  try {
-      return await driverSchema.find()
-  } catch (err) { throw { status: 500, error: err } }    
-}
-
 const createDriver = async (_driver) => {
   try{
       const driver = new driverSchema(_driver)
@@ -20,17 +14,23 @@ const createDriver = async (_driver) => {
   } catch (error) { throw { status: 500, message: error?.message || error }; }
 }
 
+const getDrivers = async () => { 
+  try {
+      return await driverSchema.find()
+  } catch (err) { throw { status: 500, error: err } }    
+}
+
+
 const getDriver = async (id) => {
   try {
-    const driverRef = db.collection('operadores').doc(id)
-    const driver = await driverRef.get()
+    const driverRef = await driverSchema.findById(id)
 
-    if(driver.exists) { 
-      return {status:true, data: driver.data()}
+    if(!driverRef) { 
+      return {status:false, data: "Driver does not exist"}
     }
-    else {
-      return {status: false, data:"Driver does not exist"}
-    }
+    console.log(driverRef)
+    return {status: true, data: driverRef}
+    
     
   } catch (error) {
     throw { status: 500, error: error };

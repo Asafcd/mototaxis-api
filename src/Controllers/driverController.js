@@ -19,10 +19,8 @@ const createDriver = async (req,res) => {
 };
 const getDrivers = async (req,res) => {
     try {
-        
         const driversData = await driverService.getDrivers()
-       
-        res.status(200).send(driversData)
+        res.status(200).send({data: driversData})
     } catch (err) {
         res
         .status(err?.status || 500)
@@ -36,10 +34,8 @@ const getDriver = async (req,res) => {
     if (status){
         try {
             const { status, data } = await driverService.getDriver(id)
-            if(status) { res.status(200).send({data}) }
-            else{
-                res.status(400).send({data: `Driver with id ${id} not found`})
-            }
+            if(!status) { res.status(400).send({data: `Driver with id ${id} not found`})}
+            res.status(200).send({data})
         } catch (err) {
             res
             .status(err?.status || 500)
