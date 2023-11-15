@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router();
 
-const reportController = require('../Controllers/reportController')
+const {create, get, getById, update, deleteById} = require('../Controllers/reportController')
 
 router
-    .post('/', buttonController.createReport )
-    .get('/', buttonController.getReports )
-    .get('/:id', buttonController.getReport )
-    .put('/:id', buttonController.updateReport )
-    .delete('/:id', buttonController.deleteReport )
+    .post('/', create )
+    .get('/', get )
+    .get('/:id', getById )
+    .put('/:id', update )
+    .delete('/:id', deleteById )
 
 module.exports = router
