@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 
-const {create, get, getById, update, deleteById} = require('../Controllers/reportController')
+const {create, get, getById, update, deleteById} = require('../Controllers/reportUserController')
 
 router
     .post('/', create )
