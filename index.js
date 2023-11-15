@@ -26,11 +26,11 @@ connect(MONGO_URI)
 
 app.use('/api/v1/driver', require("./src/Routes/driverRoute"))
 app.use('/api/v1/trip', require("./src/Routes/tripRoute"))
-//app.use('/api/v1/report', require("./src/Routes/reportRoute"))
 app.use('/api/v1/client', require("./src/Routes/clientRoute"))
-//app.use('/api/v1/auth', require("./src/Routes/authRoute"));
 app.use('/api/v1/place', require("./src/Routes/placeRoute"));
 app.use('/api/v1/travelType', require("./src/Routes/travelTypeRoute"))
+//app.use('/api/v1/report', require("./src/Routes/reportRoute"))
+//app.use('/api/v1/auth', require("./src/Routes/authRoute"));
 
 
 app.listen(app.get("port"), () => {
