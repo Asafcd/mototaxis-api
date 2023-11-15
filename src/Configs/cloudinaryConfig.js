@@ -12,16 +12,48 @@ cloudinary.config({
     api_secret: API_SECRET,
 });
 
-const uploadImageUser = async (filePath) => {
-    return await cloudinary.uploader.upload(filePath, {
+const uploadImageUser = async (file) => {
+    return await cloudinary.uploader.upload(buffer, {
+        resource_type: 'auto',
         folder: "uploads_user",
     });
 };
 
-const uploadImageDriver = async (filePath) => {
-    return await cloudinary.uploader.upload(filePath, {
-        folder: "uploads_driver",
-    });
+const uploadImageDriver = async (fileImage) => {
+    try {
+        validateFile(fileImage);
+        const { buffer, originalname } = fileImage
+        
+        //let response
+        return new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { resource_type: 'auto', folder: 'uploads_driver', public_id: originalname },
+                (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+
+            stream.end(buffer);
+        });
+        /* const response = await cloudinary.uploader.upload(undefined, {
+            file: {
+              value: buffer,
+              options: {
+                filename: originalname,
+              },
+            },
+            resource_type: 'auto',
+            folder: 'uploads_driver',
+          }); */
+        //return response
+    } catch (err) {
+        console.error(err)
+        throw err
+    }
 };
 
 const deleteImage = async (id) => {
@@ -44,11 +76,24 @@ const getFileSizeInMB = (bytes) => {
     return bytes / (1024 * 1024);
 };
 
+const validateFile = (file) => {
+    const { originalname, size } = file;
+    const extension = getExtension(originalname);
+    const isExtensionValid = isValidImageExtension(extension);
+    const isSizeValid = getFileSizeInMB(size) <= MAX_IMAGE_SIZE;
+
+    if (!isExtensionValid) {
+        throw new Error("Invalid file extension");
+    }
+
+    if (!isSizeValid) {
+        throw new Error("Invalid file size");
+    }
+    console.log("Everything is valid");
+}
+
 module.exports = {
     uploadImageUser,
     uploadImageDriver,
     deleteImage,
-    getExtension,
-    isValidImageExtension,
-    getFileSizeInMB,
 };

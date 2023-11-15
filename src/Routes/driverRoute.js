@@ -2,11 +2,8 @@ const express = require('express')
 const router = express.Router();
 
 const driverController = require('../Controllers/driverController');
-//const upload = require('../Configs/multer');
-const multer = require('multer');
+const upload = require('../Configs/multer');
 
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage }).single('file')
 router
     .post('/', upload, driverController.createDriver )
     .get('/', driverController.getDrivers )
