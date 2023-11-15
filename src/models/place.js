@@ -20,18 +20,48 @@ type
 
 const { Schema, model } = require('mongoose')
 
-const PlaceSchema = new Schema({
-    _id: { type: Schema.Types.ObjectId, auto: true },
-    place_id: { type: String, required: true },
-    title: { type: String, required: true },
-    structured_formatting: {
-        main_text: { type: String, required: true },
-        secondary_text: { type: String, required: false },
+const placeSchema = new Schema(
+  {
+    place_id: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    latitude: { type: Number, required: true },
-    longitude: { type: Number, required: true },
-    type: { type: String, required: true },
-})
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    structured_formatting: {
+      main_text: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      secondary_text: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+    },
+    latitude: {
+      type: Number,
+      required: true,
+    },
+    longitude: {
+      type: Number,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ["origin", "destination"],
+      required: true,
+    },
+  },
+  {
+    timestamps: false,
+    versionKey: false,
+  }
+);
 
-const placeSchema = model('places', PlaceSchema)
-module.exports = placeSchema
+module.exports = model("places", placeSchema);
