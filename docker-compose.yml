@@ -4,6 +4,6 @@ services:
    mototaxi-server:
       build: .
       volumes:
-      - ./src:/usr/app/src
+      - ./src:/app/src
       ports:
-      - 80:100   
+      - 80:80   

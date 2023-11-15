@@ -1,10 +1,10 @@
 FROM node:16
 
-RUN mkdir -p /usr/app/src
-WORKDIR /usr/app
+RUN mkdir -p /app/src
+WORKDIR /app
 
 
-COPY package*.json /usr/app/
+COPY package*.json /app/
 
 RUN npm install
 # If you are building your code for production
@@ -13,5 +13,5 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 100
+EXPOSE 80
 CMD [ "node", "./index.js" ]
