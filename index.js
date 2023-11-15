@@ -3,19 +3,20 @@ const morgan = require('morgan')
 
 
 const app = express();
+app.set("port", process.env.PORT || 80);
+app.use(morgan('dev'))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
 app.use( (req,res,next) =>{
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,auth-token');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,auth-token');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     // Pass to next layer of middleware
     next();
 } )
-app.set("port", process.env.PORT || 80);
-app.use(morgan('dev'))
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
 
 const MONGO_URI = "mongodb+srv://webapi:QWkcO2Vq4NbhJw9E@clusterprincipal.awhqaet.mongodb.net/Para?retryWrites=true&w=majority"
 const { connect } = require("mongoose");

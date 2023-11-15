@@ -1,11 +1,15 @@
+const { uploadImageDriver } = require('../Configs/cloudinaryConfig');
 const driverService = require('../Services/driverService')
 const { validateBody, validateId } = require('../Validators/driverValidator')
 
 const createDriver = async (req, res) => {
     const body = req.body
+    console.log(req.file)
+    console.log(req.body)
     try {
-        const { data } = await driverService.createDriver(body)
-        res.status(200).send({ message: 'Driver successfully created, id: ', data })
+       // const response = await uploadImageDriver(imageFile)
+        //const { data } = await driverService.createDriver(body)
+        res.status(200).send({ message: 'Driver successfully created, id: ' })
     } catch (err) {
         res
             .status(err?.status || 500)
