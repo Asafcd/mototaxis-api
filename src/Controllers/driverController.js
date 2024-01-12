@@ -4,16 +4,27 @@ const { validateBody, validateId } = require('../Validators/driverValidator')
 
 const createDriver = async (req, res) => {
     const body = req.body
-    const file = req.file
+    let file
+    req.file ? file = req.file : file = undefined
 
     try {
-        const { public_id, url } = await uploadImageDriver(file)
+        if(file!==undefined){
+            const { public_id, url } = await uploadImageDriver(file)
+            const driver = { 
+                ...body,
+                profile_picture: { url, public_id }
+            }
+            const { data } = await driverService.createDriver(driver)
+            res.status(200).send({ message: 'Driver successfully created, id: ', data })
+
+        }
         const driver = { 
             ...body,
-            profile_picture: { url, public_id }
+            profile_picture: { url: "", public_id: "" }
         }
         const { data } = await driverService.createDriver(driver)
-        res.status(200).send({ message: 'Driver successfully created, id: ', data })
+        res.status(200).send({ message: 'Driver successfully created without picture, id: ', data })
+
     } catch (err) {
         res
             .status(err?.status || 500)
