@@ -38,7 +38,7 @@ const deleteTravelType = async (id) => {
         const {status} = await getDataById(id)
         if(!status) { return { status: false, data: "Travel type does not exist" } }
 
-        const data = await TravelTypeSchema.findByIdAndRemove(id)
+        const data = await TravelTypeSchema.findByIdAndDelete(id)
         return {status: true, data}
     }catch(err){throw {status: 500, error: err}}
 }

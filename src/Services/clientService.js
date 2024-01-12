@@ -38,7 +38,7 @@ const deleteData = async (id) => {
         const {status} = await getDataById(id)
         if(!status) { return { status: false, data: "user does not exist" } }
 
-        const data = await UserSchema.findByIdAndRemove(id)
+        const data = await UserSchema.findByIdAndDelete(id)
         return {status: true, data}
     }catch(err){throw {status: 500, error: err}}
 }

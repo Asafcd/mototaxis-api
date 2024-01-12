@@ -38,7 +38,7 @@ const deleteData = async (id) => {
         const {status} = await getDataById(id)
         if(!status) { return { status: false, data: "reportDriver does not exist" } }
 
-        const data = await reportDriverSchema.findByIdAndRemove(id)
+        const data = await reportDriverSchema.findByIdAndDelete(id)
         return {status: true, data}
     }catch(err){throw {status: 500, error: err}}
 }

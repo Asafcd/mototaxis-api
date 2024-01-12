@@ -44,7 +44,7 @@ const updateDriver = async (id, body) => {
 
 const deleteDriver = async (id) => {
   try {
-    await driverSchema.findByIdAndRemove(id)
+    await driverSchema.findByIdAndDelete(id)
     return { status: true, data: "Driver deleted successfully" }
   } catch (error) { throw { status: error?.status || 500, message: error?.message || error } }
 
