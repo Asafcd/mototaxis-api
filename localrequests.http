@@ -1,19 +1,30 @@
-@localURL = http://localhost:100/api/v1
-@BaseURL = http://54.196.247.168/api/v1
+@localURL = http://localhost:80/api/v1
+@BaseURL = http://34.234.66.51/api/v1
 
 #### getClients
+GET {{localURL}}/travelType
+
+#### getTrips
+GET {{localURL}}/driver
+
+GET {{localURL}}/client
+
 GET {{localURL}}/client
 
 #### CreateClient
-POST {{localURL}}/client/ HTTP/1.1
-Content-Type: application/json
+POST {{localURL}}/driver/ 
 
 {
-    "nombre": "cepillin",
-    "apellidos": "perez",
-    "correo": "nombre@correo.com",
-    "telefono": "1234567890",
-    "direccion": "direccion"
+    "body": {
+        "name": "cepillin",
+        "last_name": "perez",
+        "email": "nombre@correo.com",
+        "password": "nombre@correo.com",
+        "phone_number": "1234567890",
+        "address": "direccion",
+        "license_plate": "1234567890",
+        "vehicle_color": "rojo",
+    }
 }
 
 ### getClient
@@ -30,7 +41,7 @@ Content-Type: application/json
     }
 
 ### deleteClient
-DELETE {{localURL}}/client/2IGdoYKT0UHSUisdSFAa
+DELETE {{BaseURL}}/driver/65a19ee889c708e2b13e0ddf
 
 #### getDrivers
 GET {{BaseURL}}/driver/

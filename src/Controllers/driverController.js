@@ -83,6 +83,7 @@ const deleteDriver = async (req, res) => {
         const { status } = await driverService.getDriver(id)
         if (!status) {
             res.status(404).send({ data: `Driver with id ${id} not found` })
+            return;
         }
         const { data } = await driverService.deleteDriver(id)
         res.status(200).send({ data })
