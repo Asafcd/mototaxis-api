@@ -44,7 +44,7 @@ Content-Type: application/json
 DELETE {{BaseURL}}/driver/65a19ee889c708e2b13e0ddf
 
 #### getDrivers
-GET {{BaseURL}}/driver/
+GET {{BaseURL}}/driver/65a1995c1850a67dd9722908
 
 #### getDriver
 GET {{BaseURL}}/driver/cVWC1Rard91gIRqzTQd0

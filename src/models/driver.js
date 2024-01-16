@@ -98,7 +98,7 @@ driverSchema.index({ name: "text", last_name: "text" });
 
 driverSchema.set("toJSON", {
   transform: (doc, ret, options) => {
-    delete ret.password;
+    //delete ret.password;
     delete ret.socket_id;
     delete ret.authStrategy;
     delete ret.refreshToken;
