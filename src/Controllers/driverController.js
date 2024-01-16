@@ -15,7 +15,7 @@ const createDriver = async (req, res) => {
                 profile_picture: { url, public_id }
             }
             const { data } = await driverService.createDriver(driver)
-            res.status(200).send({ message: 'Driver successfully created, id: ', data })
+            return res.status(200).send({ message: 'Driver successfully created, id: ', data })
 
         }
         const driver = { 
@@ -23,7 +23,7 @@ const createDriver = async (req, res) => {
             profile_picture: { url: "", public_id: "" }
         }
         const { data } = await driverService.createDriver(driver)
-        res.status(200).send({ message: 'Driver successfully created without picture, id: ', data })
+        return res.status(200).send({ message: 'Driver successfully created without picture, id: ', data })
 
     } catch (err) {
         res
@@ -35,7 +35,7 @@ const createDriver = async (req, res) => {
 const getDrivers = async (req, res) => {
     try {
         const driversData = await driverService.getDrivers()
-        res.status(200).send({ data: driversData })
+        return res.status(200).send({ data: driversData })
     } catch (err) {
         res
             .status(err?.status || 500)
@@ -49,15 +49,15 @@ const getDriver = async (req, res) => {
     if (status) {
         try {
             const { status, data } = await driverService.getDriver(id)
-            if (!status) { res.status(400).send({ data: `Driver with id ${id} not found` }) }
-            res.status(200).send({ data })
+            if (!status) { return res.status(400).send({ data: `Driver with id ${id} not found` }) }
+            return res.status(200).send({ data })
         } catch (err) {
             res
                 .status(err?.status || 500)
                 .send({ status: "FAILED", data: { error: err?.message || err } });
         }
     } else {
-        res.status(400).send({ status: "Failed type validation", data: error })
+        return res.status(400).send({ status: "Failed type validation", data: error })
     }
 };
 
@@ -66,10 +66,10 @@ const updateDriver = async (req, res) => {
     const body = req.body
     try {
         const { status } = await driverService.getDriver(id)
-        if (!status) { res.status(404).send({ data: `Driver with id ${id} not found` }) }
+        if (!status) { return res.status(404).send({ data: `Driver with id ${id} not found` }) }
 
         const { data } = await driverService.updateDriver(id, body)
-        res.status(200).send({ data })
+        return res.status(200).send({ data })
     } catch (err) {
         res
             .status(err?.status || 500)
@@ -82,11 +82,11 @@ const deleteDriver = async (req, res) => {
     try {
         const { status } = await driverService.getDriver(id)
         if (!status) {
-            res.status(404).send({ data: `Driver with id ${id} not found` })
+            return res.status(404).send({ data: `Driver with id ${id} not found` })
             return;
         }
         const { data } = await driverService.deleteDriver(id)
-        res.status(200).send({ data })
+        return res.status(200).send({ data })
     } catch (err) {
         res
             .status(err?.status || 500)

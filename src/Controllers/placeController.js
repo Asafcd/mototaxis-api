@@ -4,19 +4,19 @@ const create = async (req, res) => {
   const body = req.body
   try {
     const {data} = await createData(body);
-    res.status(201).send({ data, message: "Place created succesfully" });
+    return res.status(201).send({ data, message: "Place created succesfully" });
   } catch (err) {
     console.error(err)
-    res.status(500).send({ err });
+    return res.status(500).send({ err });
   }
 }
 
 const get = async (req, res) => {
   try {
     const data = await getData();
-    res.status(200).send({ data });
+    return res.status(200).send({ data });
   } catch (err) {
-    res.status(500).send({ error: err });
+    return res.status(500).send({ error: err });
   }
 }
 
@@ -24,9 +24,9 @@ const getById = async (req, res) => {
   const {id} = req.params
   try {
     const data = await getDataById(id);
-    res.status(200).send({ data });
+    return res.status(200).send({ data });
   } catch (err) {
-    res.status(500).send({ error: err });
+    return res.status(500).send({ error: err });
   }
 }
 
@@ -35,9 +35,9 @@ const update = async (req, res) => {
   const body = req.body
   try {
     const data = await updateData(id, body);
-    res.status(200).send({ data });
+    return res.status(200).send({ data });
   } catch (err) {
-    res.status(500).send({ error: err });
+    return res.status(500).send({ error: err });
   }
 }
 
@@ -45,9 +45,9 @@ const deleteById = async (req, res) => {
   const {id} = req.params
   try {
     const data = await deleteData(id);
-    res.status(200).send({ data });
+    return res.status(200).send({ data });
   } catch (err) {
-    res.status(500).send({ error: err });
+    return res.status(500).send({ error: err });
   }
 }
 

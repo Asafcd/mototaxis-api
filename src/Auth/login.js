@@ -17,11 +17,11 @@ const login = async (req, res) => {
                     res.header('auth-token', token).send({ token: token, data: data })
                 }
                 else {
-                    res.status(400).send({ status: "Failed", data: pwError })
+                    return res.status(400).send({ status: "Failed", data: pwError })
                 }
             }
             else {
-                res.status(400).send({ status: "Failed", data: "Client not found" })
+                return res.status(400).send({ status: "Failed", data: "Client not found" })
             }
         } catch (err) {
             res
@@ -29,7 +29,7 @@ const login = async (req, res) => {
                 .send({ status: "FAILED", data: { error: err.error || err } });
         }
     } else {
-        res.status(400).send({ status: "Failed type validation", data: error })
+        return res.status(400).send({ status: "Failed type validation", data: error })
     }
 }
 
@@ -37,7 +37,7 @@ const validateToken = (req, res, next) => {
     // Obtenemos el token del header del request
     const token = req.header('auth-token')
     // Validamos si no hay token
-    if(!token) return res.status(401).json({error: 'Acceso denegado'})
+    if(!token) return return res.status(401).json({error: 'Acceso denegado'})
     try {
         // Verificamos el token usando la dependencia de jwt y el método .verify
         const verified = jwt.verify(token, "privateKey")
@@ -46,7 +46,7 @@ const validateToken = (req, res, next) => {
         // next() indica que el req paso la prueba y continue su camino
         next()
     } catch (error){
-        res.status(400).json({error: 'Token no valido, acceso denegado'})
+        return res.status(400).json({error: 'Token no valido, acceso denegado'})
     }
 }
 
