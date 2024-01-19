@@ -66,7 +66,7 @@ userSchema.index({ name: "text", last_name: "text" });
 
 userSchema.set("toJSON", {
   transform: (doc, ret, options) => {
-    delete ret.password;
+    // sdelete ret.password;
     delete ret.authStrategy;
     delete ret.refreshToken;
 
