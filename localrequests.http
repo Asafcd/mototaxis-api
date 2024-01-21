@@ -12,21 +12,28 @@ GET {{localURL}}/client
 GET {{localURL}}/client
 
 #### CreateClient
-POST {{localURL}}/driver/ 
+POST {{localURL}}/driver/ HTTP/1.1
+Content-Type: application/json
 
-{
-    "body": {
+    {
         "name": "cepillin",
         "last_name": "perez",
-        "email": "nombre@correo.com",
-        "password": "nombre@correo.com",
+        "email": "nombre2@correo.com",
+        "password": "n123456",
         "phone_number": "1234567890",
         "address": "direccion",
         "license_plate": "1234567890",
-        "vehicle_color": "rojo",
+        "vehicle_color": "rojo"
     }
-}
 
+#### Decrypt Password Driver|Client
+POST {{localURL}}/driver/0/65ad9a440be402ffff1f97bd HTTP/1.1
+Content-Type: application/json
+
+    {
+        "password": "n123456"
+    }
+    
 ### getClient
 GET {{localURL}}/client/A5MeSG9X5o0u9kBtF0J7
 

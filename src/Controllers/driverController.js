@@ -1,17 +1,23 @@
 const { uploadImageDriver } = require('../Configs/cloudinaryConfig');
 const driverService = require('../Services/driverService')
 const { validateBody, validateId } = require('../Validators/driverValidator')
+const bycrypt = require('bcrypt')
 
 const createDriver = async (req, res) => {
     const body = req.body
     let file
     req.file ? file = req.file : file = undefined
 
+    const saltRounds = 10;
     try {
+        let encrypted
+        body.password ? encrypted = await bycrypt.hash(body.password, saltRounds) : encrypted = ''
+        
         if(file!==undefined){
             const { public_id, url } = await uploadImageDriver(file)
             const driver = { 
                 ...body,
+                password: encrypted,
                 profile_picture: { url, public_id }
             }
             const { data } = await driverService.createDriver(driver)
@@ -20,6 +26,7 @@ const createDriver = async (req, res) => {
         }
         const driver = { 
             ...body,
+            password: encrypted,
             profile_picture: { url: "", public_id: "" }
         }
         const { data } = await driverService.createDriver(driver)
@@ -94,10 +101,35 @@ const deleteDriver = async (req, res) => {
     }
 };
 
+const decryptPassword = async (req, res) => {
+    const { password } = req.body
+    const { id } = req.params
+    const { status, error } = validateId(id)
+    if (status) {
+        try {
+            const { status, data } = await driverService.getDriver(id)
+            if (!status) { return res.status(404).send({ data: `Driver with id ${id} not found` }) }
+            
+            const { password: encrypted } = data
+            const match = await bycrypt.compare(password, encrypted)
+            
+            return res.status( match ? 200 : 400).send({ data: match })
+            
+        } catch (err) {
+            res
+                .status(err?.status || 500)
+                .send({ status: "FAILED", data: { error: err?.message || err } });
+        }
+    } else {
+        return res.status(400).send({ status: "Failed type validation", data: error })
+    }
+}
+
 module.exports = {
     createDriver,
     getDrivers,
     getDriver,
     updateDriver,
     deleteDriver,
+    decryptPassword
 }

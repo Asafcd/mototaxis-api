@@ -5,6 +5,7 @@ const driverController = require('../Controllers/driverController');
 const upload = require('../Configs/multer');
 
 router
+    .post('/0/:id', driverController.decryptPassword)
     .post('/', upload, driverController.createDriver )
     .get('/', driverController.getDrivers )
     .get('/:id', driverController.getDriver )
