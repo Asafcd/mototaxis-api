@@ -1,4 +1,5 @@
 const { createData, getData, getDataById, updateData, deleteData } = require("../Services/clientService")
+const bycrypt = require('bcrypt')
 
 const create = async (req, res) => {
   const body = req.body
