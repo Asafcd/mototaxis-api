@@ -10,8 +10,9 @@ const createDriver = async (req, res) => {
 
     const saltRounds = 10;
     try {
-        let encrypted
-        body.password ? encrypted = await bycrypt.hash(body.password, saltRounds) : encrypted = ''
+        if(!body.password) return res.status(400).send({data: `Password is required`} )
+
+        const encrypted = await bycrypt.hash(body.password, saltRounds)
         
         if(file!==undefined){
             const { public_id, url } = await uploadImageDriver(file)
@@ -84,6 +85,27 @@ const updateDriver = async (req, res) => {
     }
 };
 
+const updatePassword = async (req, res) => {
+    const { id } = req.params
+    const body = req.body
+    try {
+        if( !body.password ) { return res.status(400).send({ data: `Password is required` }) }
+        
+        const { status } = await driverService.getDriver(id)
+        if (!status) { return res.status(404).send({ data: `Driver with id ${id} not found` }) }
+        
+        const saltRounds = 10;
+        const encrypted = await bycrypt.hash(body.password, saltRounds)
+        const newBody = { ...body, password: encrypted }
+        const { data } = await driverService.updateDriver(id, newBody)
+        return res.status(200).send({ data: "Password updated succesfully" })
+    } catch (err) {
+        res
+            .status(err?.status || 500)
+            .send({ status: "FAILED", data: { error: err?.message || err } });
+    }
+};
+
 const deleteDriver = async (req, res) => {
     const { id } = req.params
     try {
@@ -130,6 +152,7 @@ module.exports = {
     getDrivers,
     getDriver,
     updateDriver,
+    updatePassword,
     deleteDriver,
     decryptPassword
 }
