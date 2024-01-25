@@ -1,2 +1,15 @@
 name: deploy changes
 
+
+on:
+    push:
+        branches:
+        - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        
+        steps:
+        - name: connect to aws
+          run: echo "hola me estoy conectando, luego lo hago =P"
